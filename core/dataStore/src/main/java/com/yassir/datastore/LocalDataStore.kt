@@ -1,6 +1,5 @@
 package com.yassir.datastore
 
-import com.yassir.common.Language
 import kotlinx.coroutines.flow.Flow
 
 interface LocalDataStore {
