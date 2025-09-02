@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="17">
+      <module name="Rick_Morty_Characters.corev2.common" target="21" />
+      <module name="Rick_Morty_Characters.corev2.data" target="21" />
+      <module name="Rick_Morty_Characters.corev2.dataStore" target="21" />
+      <module name="Rick_Morty_Characters.corev2.design" target="21" />
+      <module name="Rick_Morty_Characters.corev2.domain" target="21" />
+      <module name="Rick_Morty_Characters.corev2.navigation" target="21" />
+      <module name="Rick_Morty_Characters.corev2.network" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

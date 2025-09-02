@@ -15,32 +15,20 @@ suspend inline fun <T, R> safeApiCall(
 ): Result<R> = withContext(dispatcher.io) {
     runCatching {
         val response = apiCall()
-
         if (response.isSuccessful) {
             val body = response.body() ?: throw IllegalArgumentException("Null body from API")
-            val status =
-                ApiStatus.entries.firstOrNull { it.value == body.status } ?: ApiStatus.ServerError
 
-            when (status) {
-                ApiStatus.Success -> {
-                    body.data?.let { apiResultOf(it) }
-                        ?: throw IllegalArgumentException("Null data from API")
-                }
-
-                ApiStatus.ServerError -> {
-                    throw IllegalArgumentException(body.message)
-                }
+            if (body != IllegalArgumentException()) {
+                body.data?.let { apiResultOf(it) } ?: throw IllegalArgumentException("Null data from API")
+            } else {
+                throw IllegalArgumentException("Null data from API")
             }
 
         } else throw HttpException(response)
 
     }.getOrElse { throwable ->
+        throwable.printStackTrace()
         val msg = errorHandler.invoke(throwable)
         Result.failure(ApiException(msg))
     }
-}
-
-enum class ApiStatus(val value: String) {
-    Success("ok"),
-    ServerError("error")
 }

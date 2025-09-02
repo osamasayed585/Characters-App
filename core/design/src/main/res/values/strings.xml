@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unexpected_error_msg">unexpected error</string>
+    <string name="unexpected_error_image">unexpected error image</string>
+    <string name="retry">Retry</string>
+    <string name="loading">Loading...</string>
+    <string name="r_m_c">Rick and Morty Characters</string>
+    <string name="back">back\n</string>
+    <string name="detail">Detail</string>
+</resources>

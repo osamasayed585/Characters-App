@@ -1,11 +1,10 @@
 package com.yassir.network.di.errorHandler
 
+import android.graphics.pdf.PdfDocument.PageInfo
 import com.google.gson.annotations.SerializedName
 
 data class BaseResponse<T>(
-    val status: String = "",
-    @SerializedName("articles")
+    @SerializedName("results")
     val data: T?,
-    val totalResults: Int = 0,
-    val message: String,
+    val info: PageInfo,
 )

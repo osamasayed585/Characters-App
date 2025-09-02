@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="limited_message">You have requested too many results. Developer accounts are limited to a max of 100 results. You are trying to request results 100 to 110. Please upgrade to a paid plan if you need more results.</string>
+</resources>
