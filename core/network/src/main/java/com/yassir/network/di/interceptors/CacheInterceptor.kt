@@ -13,12 +13,10 @@ class CacheInterceptor(private val preferences: LocalDataStore) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response = runBlocking {
         // Fetch token and language from preferences
         val token = preferences.requestToken().firstOrNull()
-        val language = preferences.requestLanguage().firstOrNull()
 
         // Build the request with headers
         val requestBuilder = chain.request().newBuilder().apply {
             token?.let { addHeader("Authorization", "Bearer $it") }
-            language?.let { addHeader("lang", it) }
             addHeader("Accept", "application/json")
         }
 
