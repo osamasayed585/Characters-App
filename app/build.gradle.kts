@@ -1,21 +1,26 @@
 plugins {
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kover)
+    alias(libs.plugins.hilt.android)
     id("com.google.devtools.ksp")
-    id("kotlin-parcelize")
 }
 
 android {
-    namespace = "com.yassir.home"
+    namespace = libs.versions.appNamesPace.get()
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
+        applicationId = libs.versions.applicationId.get()
         minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {
@@ -32,7 +37,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = libs.versions.jvmTarget.get()
     }
     buildFeatures {
         compose = true
@@ -40,18 +45,18 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.kotlinCompiler.get()
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 dependencies {
 
     // visibility modules
-    implementation(project(":core:common"))
     implementation(project(":core:design"))
-    implementation(project(":core:network"))
-    implementation(project(":core:dataStore"))
-    implementation(project(":core:data"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:model"))
+    implementation(project(":core:navigation"))
 
     // core
     implementation(libs.androidx.core.ktx)
@@ -59,6 +64,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+
 
     // compose
     implementation(platform(libs.androidx.compose.bom))
@@ -68,20 +74,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // unit testing
+    // unit test
     testImplementation(libs.junit)
-    testImplementation(libs.mockk.android)
-    testImplementation(libs.mockk.agent)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.turbine)
-    testImplementation(libs.kluent.android)
 
-
-
-
-    // android testing
+    // android test
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // shared element transition
+    implementation(libs.androidx.foundation)
 
     // hilt
     implementation(libs.androidx.hilt.navigation.compose)
@@ -90,16 +93,6 @@ dependencies {
 
     // coroutines
     implementation(libs.kotlinx.coroutines.android)
-
-    //Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-
-    // Paging 3
-    implementation(libs.paging.runtime)
-    implementation(libs.paging.compose)
-    testImplementation("androidx.paging:paging-testing:3.3.0")
 
     // timber
     implementation(libs.timber)

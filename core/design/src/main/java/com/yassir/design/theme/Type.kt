@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.sp
 
 
 /**
- * Typography styles used throughout the JetNews
+ * Typography styles used throughout the Rick Morty Characters app.
  */
 internal val Typography = Typography(
     displayLarge = TextStyle(
