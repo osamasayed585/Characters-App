@@ -1,7 +1,15 @@
-# Rick & Morty Characters
+<h1 align="center">Rick & Morty Characters</h1>
+<p align="center">
+  <img src="screens/cover.png" alt="Rick & Morty App Cover" width="300"/>
+</p>
 
-This Android application is built with **Kotlin** and **Jetpack Compose**. It fetches data from the [Rick and Morty API](https://rickandmortyapi.com/) and displays characters in a paginated list.  
-The project is designed as a showcase of modern Android development, applying clean architecture principles and modularity while demonstrating elegant UI design with Jetpack Compose.
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
+
+
+## Overview
+This Android application is built with **Kotlin** and **Jetpack Compose**. It fetches data from the [Rick and Morty API](https://rickandmortyapi.com/) and displays characters in a paginated list. The project is designed as a showcase of modern Android development, applying clean architecture principles and modularity while demonstrating elegant UI design with Jetpack Compose.
+
 ---
 
 ## 📱 Features
