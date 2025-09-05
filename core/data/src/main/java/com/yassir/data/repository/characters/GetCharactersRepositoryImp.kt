@@ -1,4 +1,4 @@
-package com.yassir.data.repository.articles
+package com.yassir.data.repository.characters
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -7,9 +7,9 @@ import androidx.paging.map
 import com.yassir.common.di.DispatcherProvider
 import com.yassir.common.utils.Constants
 import com.yassir.data.mapper.asExternalUiModel
-import com.yassir.data.remote.ArticlesService
+import com.yassir.data.remote.CharactersService
 import com.yassir.datastore.LocalDataStore
-import com.yassir.domain.repository.CharactersRepository
+import com.yassir.domain.repository.GetCharactersRepository
 import com.yassir.model.beans.CharacterDto
 import com.yassir.model.beans.CharacterUIModel
 import com.yassir.network.di.errorHandler.entities.ErrorHandler
@@ -17,12 +17,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class CharactersRepositoryImp @Inject constructor(
-    private val apiService: ArticlesService,
+class GetCharactersRepositoryImp @Inject constructor(
+    private val apiService: CharactersService,
     private val preferences: LocalDataStore,
     private val dispatcherProvider: DispatcherProvider,
     private val errorHandler: ErrorHandler,
-) : CharactersRepository {
+) : GetCharactersRepository {
 
 
     override fun requestCharacters(): Flow<PagingData<CharacterUIModel>> {
@@ -43,8 +43,8 @@ class CharactersRepositoryImp @Inject constructor(
         )
             .flow
             .map { pagingData: PagingData<CharacterDto> ->
-                pagingData.map { networkArticle: CharacterDto ->
-                    networkArticle.asExternalUiModel()
+                pagingData.map { networkCharacter: CharacterDto ->
+                    networkCharacter.asExternalUiModel()
                 }
             }
     }

@@ -9,5 +9,5 @@ class GetCharacterDetailsUseCase @Inject constructor(
     private val repository: CharacterDetailsRepository,
 ) {
 
-    suspend operator fun invoke(query: String) = repository.requestCharacterDetails(query)
+    suspend operator fun invoke(id: Int) = repository.requestCharacterDetails(id)
 }

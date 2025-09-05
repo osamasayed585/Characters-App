@@ -4,7 +4,7 @@ import androidx.paging.PagingData
 import com.yassir.model.beans.CharacterUIModel
 import kotlinx.coroutines.flow.Flow
 
-interface CharactersRepository {
+interface GetCharactersRepository {
 
     /**
      * Requests a [Flow] of [PagingData] for [CharacterUIModel] objects.
