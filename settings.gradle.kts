@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Rick Morty Characters"
+rootProject.name = "Characters App"
 include(":app")
 include(":core:network")
 include(":core:common")

@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import app.cash.turbine.test
 import com.yassir.common.di.DefaultDispatcherProvider
+import com.yassir.domain.useCases.CharactersUseCases
 import com.yassir.domain.useCases.GetCharacterUseCase
 import com.yassir.model.beans.CharacterUIModel
 import kotlinx.coroutines.flow.flowOf
@@ -22,7 +23,7 @@ class HomeViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var fakeRepository: FakeGetCharactersRepositoryImp
-    private lateinit var useCase: GetCharacterUseCase
+    private lateinit var useCases: CharactersUseCases
     private lateinit var viewModel: HomeViewModel
 
 
@@ -30,8 +31,8 @@ class HomeViewModelTest {
     @Before
     fun setup() {
         fakeRepository = FakeGetCharactersRepositoryImp()
-        useCase = GetCharacterUseCase(fakeRepository)
-        viewModel = HomeViewModel(useCase, DefaultDispatcherProvider())
+        useCases = GetCharacterUseCase(fakeRepository)
+        viewModel = HomeViewModel(useCases, DefaultDispatcherProvider())
     }
 
 

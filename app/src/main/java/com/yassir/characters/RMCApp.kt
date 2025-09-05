@@ -1,4 +1,4 @@
-package com.yassir.rickMortyCharacters
+package com.yassir.characters
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

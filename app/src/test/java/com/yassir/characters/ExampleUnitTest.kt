@@ -1,4 +1,4 @@
-package com.yassir.rickMortyCharacters
+package com.yassir.characters
 
 import org.junit.Test
 
