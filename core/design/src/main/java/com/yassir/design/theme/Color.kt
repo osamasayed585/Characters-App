@@ -73,6 +73,20 @@ val surfaceContainerDark = Color(0xFF1C2022)
 val surfaceContainerHighDark = Color(0xFF262B2D)
 val surfaceContainerHighestDark = Color(0xFF313538)
 
+val random1Light = Color(0xFF90CAF9)
+val random2Light = Color(0xFFA5D6A7)
+val random3Light = Color(0xFFFFF59D)
+val random4Light = Color(0xFFFFAB91)
+val random5Light = Color(0xFFCE93D8)
+
+val random1Dark = Color(0xFF1565C0)
+val random2Dark = Color(0xFF2E7D32)
+val random3Dark = Color(0xFFF9A825)
+val random4Dark = Color(0xFFD84315)
+val random5Dark = Color(0xFF6A1B9A)
+
+
+
 
 
 

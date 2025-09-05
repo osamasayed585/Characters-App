@@ -2,12 +2,23 @@ package com.yassir.details
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -16,20 +27,27 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
+import com.yassir.design.components.DetailRow
+import com.yassir.design.components.ErrorCard
+import com.yassir.design.components.FullScreenLoading
+import com.yassir.design.components.HandleError
+import com.yassir.design.theme.RMCTheme
+import com.yassir.design.theme.randomColor
 import com.yassir.details.event.DetailsEvent
 import com.yassir.details.state.DetailsUiState
-import com.yassir.design.components.ErrorScreen
-import com.yassir.design.components.HandleError
-import com.yassir.design.components.LoadingImage
-import com.yassir.design.theme.RMCTheme
+import com.yassir.network.di.errorHandler.entities.ErrorEntity
 
 
 @Composable
-fun ArticleDetailsRoute(snackbarHostState: SnackbarHostState) {
+fun CharacterDetailsRoute(snackbarHostState: SnackbarHostState) {
     val viewModel: DetailsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
@@ -39,79 +57,166 @@ fun ArticleDetailsRoute(snackbarHostState: SnackbarHostState) {
         onDismiss = { viewModel.emitEvent(DetailsEvent.ClearError) }
     )
 
-    ArticleDetailsScreen(
+    CharacterDetails(
         uiState = uiState,
         onRetry = {
-            viewModel.requestArticleDetails("new")
+            viewModel.requestCharacterDetails(uiState.id)
         }
     )
 
 }
 
 @Composable
-fun ArticleDetailsScreen(uiState: DetailsUiState, onRetry: () -> Unit) {
-    if (uiState.title.isNotEmpty())
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            LoadingImage(
-                url = uiState.image,
-                description = stringResource(com.yassir.common.R.string.this_is_an_image_of_character),
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp, horizontal = 4.dp),
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Text(
-                    text = uiState.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
-
-            Text(
-                modifier = Modifier.padding(horizontal = 4.dp),
-                text = uiState.description,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+fun CharacterDetails(uiState: DetailsUiState, onRetry: () -> Unit) {
+    when (uiState.apiState) {
+        is DetailsUiState.DetailApiState.Error -> ErrorCard { onRetry() }
+        is DetailsUiState.DetailApiState.Loading -> FullScreenLoading()
+        is DetailsUiState.DetailApiState.Success -> {
+            CharacterDetailsContent(uiState)
         }
-    else Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        ErrorScreen { onRetry() }
     }
-
 }
 
+@Composable
+fun CharacterDetailsContent(uiState: DetailsUiState, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(randomColor()),
+        )
+
+        AsyncImage(
+            model = uiState.image,
+            contentDescription = "${uiState.name}'s image",
+            modifier = Modifier
+                .offset(y = (-80).dp)
+                .size(160.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surface)
+                .border(4.dp, MaterialTheme.colorScheme.outline, CircleShape),
+            contentScale = ContentScale.Crop
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .offset(y = (-80).dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = uiState.name,
+                style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    DetailRow(
+                        label = stringResource(R.string.species),
+                        value = uiState.species
+                    )
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 2.dp))
+                    DetailRow(
+                        label = stringResource(R.string.status),
+                        value = uiState.status
+                    )
+                }
+            }
+        }
+    }
+}
 
 @Preview(
+    name = "Character Details - Success (Light)",
+    showBackground = true
+)
+@Preview(
+    name = "Character Details - Success (Dark)",
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 )
 @Composable
-fun ArticleDetailsPreview_Dark() {
+fun PreviewCharacterDetailsSuccess() {
     RMCTheme {
-        ArticleDetailsScreen(uiState = DetailsUiState()) {}
+        val sampleCharacter = DetailsUiState(
+            id = 1,
+            name = "Rick Sanchez",
+            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+            species = "Human",
+            status = "Alive",
+            apiState = DetailsUiState.DetailApiState.Success
+        )
+
+        CharacterDetails(
+            uiState = sampleCharacter,
+            onRetry = {}
+        )
     }
 }
 
 @Preview(
+    name = "Character Details - Loading (Light)",
     showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL
+)
+@Preview(
+    name = "Character Details - Loading (Dark)",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
 )
 @Composable
-fun ArticleDetailsPreview_Light() {
+fun PreviewCharacterDetailsLoading() {
     RMCTheme {
-        ArticleDetailsScreen(uiState = DetailsUiState()) {}
+        CharacterDetails(
+            uiState = DetailsUiState(apiState = DetailsUiState.DetailApiState.Loading),
+            onRetry = {}
+        )
+    }
+}
+
+@Preview(
+    name = "Character Details - Error (Light)",
+    showBackground = false,
+)
+@Preview(
+    name = "Character Details - Error (Dark)",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+)
+@Composable
+fun PreviewCharacterDetailsError() {
+    RMCTheme {
+        CharacterDetails(
+            uiState = DetailsUiState(
+                apiState = DetailsUiState.DetailApiState.Error(
+                    ErrorEntity.Unknown("Failed to load character data.")
+                )
+            ),
+            onRetry = {}
+        )
     }
 }

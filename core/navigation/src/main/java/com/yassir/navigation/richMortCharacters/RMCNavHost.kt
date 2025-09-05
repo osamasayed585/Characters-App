@@ -10,12 +10,16 @@ import com.yassir.details.navigation.navigateToCharacterDetails
 import com.yassir.home.navigation.charactersScreen
 
 @Composable
-fun RMCNavHost(navController: NavHostController, snackbarHostState: SnackbarHostState) {
+fun RMCNavHost(
+    navController: NavHostController,
+    snackbarHostState: SnackbarHostState,
+    querySearch: String
+) {
     NavHost(
         navController = navController,
         startDestination = Screen.HomeScreen.route
     ) {
-        charactersScreen(navController::navigateToCharacterDetails)
+        charactersScreen(navController::navigateToCharacterDetails, querySearch)
 
         characterDetailsScreen(snackbarHostState)
     }

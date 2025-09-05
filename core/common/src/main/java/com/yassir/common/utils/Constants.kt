@@ -8,4 +8,5 @@ object Constants {
     const val TITLE_MAX_LINES = 2
     const val DESCRIPTION_MAX_LINES = 2
     const val PAGE_SIZE = 20
+    const val ID = "id"
 }
