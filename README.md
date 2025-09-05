@@ -1,7 +1,8 @@
-<h1 align="center">Rick & Morty Characters</h1>
 <p align="center">
-  <img src="screens/cover.png" alt="Rick & Morty App Cover" width="1200"/>
+  <img src="screens/cover.png" alt="Rick & Morty App Cover"/>
 </p>
+
+# Characters App
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
