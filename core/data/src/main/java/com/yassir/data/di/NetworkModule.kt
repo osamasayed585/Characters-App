@@ -1,6 +1,6 @@
 package com.yassir.data.di
 
-import com.yassir.data.remote.ArticlesService
+import com.yassir.data.remote.CharactersService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ArticlesService =
-        retrofit.create(ArticlesService::class.java)
+    fun provideApiService(retrofit: Retrofit): CharactersService =
+        retrofit.create(CharactersService::class.java)
 }

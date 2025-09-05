@@ -24,9 +24,7 @@ fun LoadingImage(
     description: String,
 ) {
     AsyncImage(
-        modifier = modifier
-            .fillMaxWidth()
-            .aspectRatio(1.80f),
+        modifier = modifier,
         model = ImageRequest.Builder(context = LocalContext.current)
             .data(url)
             .crossfade(true)

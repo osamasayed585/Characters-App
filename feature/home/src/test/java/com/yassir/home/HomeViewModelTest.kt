@@ -4,9 +4,8 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import app.cash.turbine.test
 import com.yassir.common.di.DefaultDispatcherProvider
-import com.yassir.common.utils.Constants
 import com.yassir.domain.useCases.GetCharacterUseCase
-import com.yassir.model.beans.ArticleUIModel
+import com.yassir.model.beans.CharacterUIModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -16,38 +15,45 @@ import org.junit.Rule
 import org.junit.Test
 
 
-class ArticleViewModelTest {
+
+class HomeViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private lateinit var viewModel: ArticleViewModel
+    private lateinit var fakeRepository: FakeGetCharactersRepositoryImp
+    private lateinit var useCase: GetCharacterUseCase
+    private lateinit var viewModel: HomeViewModel
+
 
 
     @Before
     fun setup() {
-        viewModel = createViewModel()
+        fakeRepository = FakeGetCharactersRepositoryImp()
+        useCase = GetCharacterUseCase(fakeRepository)
+        viewModel = HomeViewModel(useCase, DefaultDispatcherProvider())
     }
 
 
     @Test
-    fun `Given empty query When request articles Then emit empty data`() = runTest {
-        viewModel.requestArticles(Constants.EMPTY_QUERY)
+    fun `Given empty When request characters Then emit empty data`() = runTest {
+        fakeRepository.setCharacters(listOf())
 
-        viewModel.articles.test {
+        viewModel.requestCharacters()
+
+        viewModel.characters.test {
             val emittedList = awaitItem().collectData()
-            val expectedList = PagingData.empty<ArticleUIModel>().collectData()
+            val expectedList = PagingData.empty<CharacterUIModel>().collectData()
 
             expectedList shouldBeEqualTo emittedList
-            cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `Given valid query When request articles Then emit valid data`() = runTest {
-        viewModel.requestArticles(Constants.ALL)
+    fun `Given valid query When request characters Then emit valid data`() = runTest {
+        viewModel.requestCharacters()
 
-        viewModel.articles.test {
+        viewModel.characters.test {
             val emittedList = awaitItem().collectData()
             val expectedList = PagingData.from(dummySuccess_HomeState).collectData()
 
@@ -57,15 +63,15 @@ class ArticleViewModelTest {
     }
 
     @Test
-    fun `Given valid query When request articles and data changes Then emit changed data`() =
+    fun `Given valid query When request characters and data changes Then emit changed data`() =
         runTest {
-            viewModel.requestArticles(Constants.ALL)
+            viewModel.requestCharacters()
 
-            viewModel.articles.test {
+            viewModel.characters.test {
                 val expectedList = PagingData.from(dummySuccess_HomeState).collectData()
                 awaitItem().collectData() shouldBeEqualTo expectedList
 
-                viewModel.requestArticles(Constants.NEW_QUERY)
+                viewModel.requestCharacters()
 
                 val expectedListAfterChanges =
                     PagingData.from(changes_dummySuccess_HomeState).collectData()
@@ -77,15 +83,15 @@ class ArticleViewModelTest {
         }
 
     @Test
-    fun `Given valid query When request articles and data removed Then emit removed data`() =
+    fun `Given valid query When request characters and data removed Then emit removed data`() =
         runTest {
-            viewModel.requestArticles(Constants.ALL)
+            viewModel.requestCharacters()
 
-            viewModel.articles.test {
+            viewModel.characters.test {
                 val expectedList = PagingData.from(dummySuccess_HomeState).collectData()
                 awaitItem().collectData() shouldBeEqualTo expectedList
 
-                viewModel.requestArticles(Constants.REMOVE_QUERY)
+                viewModel.requestCharacters()
 
                 val expectedAfterRemoval =
                     PagingData.from(remove_dummySuccess_HomeState).collectData()
@@ -97,15 +103,15 @@ class ArticleViewModelTest {
         }
 
     @Test
-    fun `Given valid query When request articles and data inserted Then emit inserted data`() =
+    fun `Given valid query When request characters and data inserted Then emit inserted data`() =
         runTest {
-            viewModel.requestArticles(Constants.ALL)
+            viewModel.requestCharacters()
 
-            viewModel.articles.test {
+            viewModel.characters.test {
                 val expectedList = PagingData.from(dummySuccess_HomeState).collectData()
                 awaitItem().collectData() shouldBeEqualTo expectedList
 
-                viewModel.requestArticles(Constants.INSERT_QUERY)
+                viewModel.requestCharacters()
 
                 val expectedListAfterInsertion =
                     PagingData.from(insert_dummySuccess_HomeState).collectData()
@@ -117,22 +123,17 @@ class ArticleViewModelTest {
         }
 
     @Test
-    fun `Given throw error When request articles Then emit empty data`() = runTest {
-        viewModel.requestArticles(Constants.THROW_ERROR)
+    fun `Given throw error When request characters Then emit empty data`() = runTest {
+        fakeRepository.setShouldThrowError(true)
 
-        viewModel.articles.test {
-            val expectedList = PagingData.empty<ArticleUIModel>().collectData()
+        viewModel.requestCharacters()
+
+        viewModel.characters.test {
+            val expectedList = PagingData.empty<CharacterUIModel>().collectData()
             awaitItem().collectData() shouldBeEqualTo expectedList
             cancelAndIgnoreRemainingEvents()
         }
     }
-}
-
-private fun createViewModel(): ArticleViewModel {
-    val dispatcherProvider = DefaultDispatcherProvider()
-    val repo = FakeCharactersRepositoryImp()
-    val useCase = GetCharacterUseCase(repo)
-    return ArticleViewModel(useCase, dispatcherProvider)
 }
 
 private fun <T : Any> PagingData<T>.collectData(): List<T> = runBlocking {
