@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -50,40 +51,52 @@ import com.yassir.design.R
 fun CustomHomeTopAppBar(
     query: String,
     onQueryChange: (String) -> Unit,
+    isSearchExpanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit
 ) {
     var textFieldWidth by remember { mutableFloatStateOf(0f) }
-    var isSearchExpanded by remember { mutableStateOf(false) }
 
-
-    AnimatedVisibility(
-        visible = isSearchExpanded,
-        enter = expandHorizontally(animationSpec = tween(300)) + fadeIn(animationSpec = tween(300)),
-        exit = shrinkHorizontally(animationSpec = tween(300)) + fadeOut(animationSpec = tween(300)),
-    ) {
-        SearchTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .onGloballyPositioned { textFieldWidth = it.size.width.toFloat() },
-            query = query,
-            onQueryChange = onQueryChange,
-            onExpandedChange = {
-                isSearchExpanded = it
+    CenterAlignedTopAppBar(
+        title = {
+            AnimatedVisibility(
+                visible = isSearchExpanded,
+                enter = expandHorizontally(animationSpec = tween(300)) + fadeIn(
+                    animationSpec = tween(
+                        300
+                    )
+                ),
+                exit = shrinkHorizontally(animationSpec = tween(300)) + fadeOut(
+                    animationSpec = tween(
+                        300
+                    )
+                ),
+            ) {
+                SearchTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { textFieldWidth = it.size.width.toFloat() },
+                    query = query,
+                    onQueryChange = onQueryChange,
+                    onExpandedChange = {
+                        onExpandedChange(it)
+                    }
+                )
             }
-        )
-    }
 
-    AnimatedVisibility(
-        visible = !isSearchExpanded,
-        enter = fadeIn(animationSpec = tween(300)),
-        exit = fadeOut(animationSpec = tween(300)),
-    ) {
-        CustomTopAppBar(
-            modifier = Modifier
-                .fillMaxWidth()
-                .width(with(LocalDensity.current) { textFieldWidth.toDp() }),
-            onSearchTap = { isSearchExpanded = true }
-        )
-    }
+            AnimatedVisibility(
+                visible = !isSearchExpanded,
+                enter = fadeIn(animationSpec = tween(300)),
+                exit = fadeOut(animationSpec = tween(300)),
+            ) {
+                CustomTopAppBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .width(with(LocalDensity.current) { textFieldWidth.toDp() }),
+                    onSearchTap = { onExpandedChange(true) }
+                )
+            }
+        }
+    )
 }
 
 @Composable
@@ -95,7 +108,7 @@ private fun SearchTextField(
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-    
+
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
         keyboardController?.show()
