@@ -6,6 +6,7 @@ import app.cash.turbine.test
 import com.yassir.common.di.DefaultDispatcherProvider
 import com.yassir.domain.useCases.CharactersUseCases
 import com.yassir.domain.useCases.GetCharacterUseCase
+import com.yassir.domain.useCases.GetSearchUseCase
 import com.yassir.model.beans.CharacterUIModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
@@ -16,13 +17,13 @@ import org.junit.Rule
 import org.junit.Test
 
 
-
 class HomeViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var fakeRepository: FakeGetCharactersRepositoryImp
+    private lateinit var fakeSearchRepository: FakeSearchCharactersRepositoryImp
     private lateinit var useCases: CharactersUseCases
     private lateinit var viewModel: HomeViewModel
 
@@ -31,7 +32,9 @@ class HomeViewModelTest {
     @Before
     fun setup() {
         fakeRepository = FakeGetCharactersRepositoryImp()
-        useCases = GetCharacterUseCase(fakeRepository)
+        val getCharactersUseCase =  GetCharacterUseCase(fakeRepository)
+        val getSearchUseCase = GetSearchUseCase(fakeSearchRepository)
+        useCases = CharactersUseCases(getCharactersUseCase, getSearchUseCase)
         viewModel = HomeViewModel(useCases, DefaultDispatcherProvider())
     }
 
