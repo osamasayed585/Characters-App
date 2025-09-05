@@ -39,8 +39,7 @@ dependencies {
 
     // unit tests
     testImplementation(libs.junit)
-    testImplementation("io.mockk:mockk-android:1.13.11")
-    testImplementation("io.mockk:mockk-agent:1.13.11")
+    testImplementation(libs.mockk)
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
 
     // hilt
