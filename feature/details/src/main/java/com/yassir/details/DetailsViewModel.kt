@@ -7,6 +7,7 @@ import com.yassir.common.di.DispatcherProvider
 import com.yassir.common.utils.Constants
 import com.yassir.details.event.DetailsEvent
 import com.yassir.details.state.DetailsUiState
+import com.yassir.details.state.DetailsUiState.DetailApiState
 import com.yassir.domain.useCases.GetCharacterDetailsUseCase
 import com.yassir.network.di.errorHandler.entities.asErrorEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,8 +22,12 @@ class DetailsViewModel @Inject constructor(
 ) : BaseViewModel<DetailsUiState, DetailsEvent>(DetailsUiState()) {
 
     init {
-        val title = savedStateHandle.get<String>("") ?: ""
-        requestArticleDetails(title)
+        createNewState(
+            uiState.value.copy(
+                id = savedStateHandle.get<Int>(Constants.ID) ?: -1
+            )
+        )
+        requestCharacterDetails(uiState.value.id)
     }
 
     /**
@@ -35,20 +40,19 @@ class DetailsViewModel @Inject constructor(
         when (sideEffect) {
             is DetailsEvent.ClearError -> createNewState(oldState.copy(errorEntity = null))
 
-            is DetailsEvent.OnGetArticleDetails -> createNewState(
+            is DetailsEvent.OnGetCharacterDetails -> createNewState(
                 oldState.copy(
-                    isLoading = false,
-                    title = sideEffect.character.name,
+                    apiState = DetailApiState.Success,
+                    name = sideEffect.character.name,
                     image = sideEffect.character.image,
-                    description = sideEffect.character.status,
-                    publishedAt = sideEffect.character.status,
-                    sourceName = sideEffect.character.status,
+                    status = sideEffect.character.status,
+                    species = sideEffect.character.species,
                 )
             )
 
             is DetailsEvent.OnGetError -> createNewState(
                 oldState.copy(
-                    isLoading = false,
+                    apiState = DetailApiState.Error(sideEffect.type),
                     errorEntity = sideEffect.type
                 )
             )
@@ -56,19 +60,20 @@ class DetailsViewModel @Inject constructor(
     }
 
 
+
     /**
-     * Requests article details for the given title.
+     * Requests character details for the given ID.
      *
-     * Launches a coroutine on the main dispatcher to fetch article details using the `getArticleDetailsUseCase`.
-     * Emits a `DetailsEvent.OnGetArticleDetails` event with the article details if successful,
+     * Launches a coroutine on the IO dispatcher to fetch character details using the `getCharacterDetailsUseCase`.
+     * Emits a `DetailsEvent.OnGetCharacterDetails` event with the character details if successful,
      * or a `DetailsEvent.OnGetError` event with the error message if an error occurs.
      *
-     * @param title The title of the article to request details for.
+     * @param id The ID of the character to request details for.
      */
-    fun requestArticleDetails(title: String) = viewModelScope.launch(dispatcher.io) {
-        getCharacterDetailsUseCase(title).fold(
-            onSuccess = { article ->
-                emitEvent(DetailsEvent.OnGetArticleDetails(article))
+    fun requestCharacterDetails(id: Int) = viewModelScope.launch(dispatcher.io) {
+        getCharacterDetailsUseCase(id).fold(
+            onSuccess = { character ->
+                emitEvent(DetailsEvent.OnGetCharacterDetails(character))
             },
             onFailure = { throwable ->
                 val asErrorEntity = throwable.asErrorEntity()

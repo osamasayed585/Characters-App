@@ -1,7 +1,6 @@
 package com.yassir.details
 
 import com.yassir.common.di.DispatcherProvider
-import com.yassir.common.utils.Constants
 import com.yassir.domain.useCases.GetCharacterDetailsUseCase
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -21,34 +20,34 @@ class DetailsViewModelTest {
 
     @Before
     fun setUp() {
-        val fakeDetailsUseCase = FakeArticleDetailsRepositoryImp()
+        val fakeDetailsUseCase = FakeCharacterDetailsRepositoryImp()
         useCase = GetCharacterDetailsUseCase(fakeDetailsUseCase)
         dispatcher = TestDispatcherProvider(StandardTestDispatcher())
     }
 
     @Test
-    fun `requestArticleDetails with all articles returns success and updates uiState`() = runTest {
+    fun `requestCharacterDetails with all characters returns success and updates uiState`() = runTest {
         val viewModel = DetailsViewModel(useCase, dispatcher)
 
-        viewModel.requestArticleDetails(Constants.ALL)
+        viewModel.requestCharacterDetails(1)
 
         assertEquals(dummySuccess_DetailsState, viewModel.uiState.value)
     }
 
     @Test
-    fun `requestArticleDetails with specific title returns success and updates uiState`() = runTest {
+    fun `requestCharacterDetails with specific title returns success and updates uiState`() = runTest {
         val viewModel = DetailsViewModel(useCase, dispatcher)
 
-        viewModel.requestArticleDetails(SPECIFIC_TITLE)
+        viewModel.requestCharacterDetails(1)
 
         assertEquals(dummySuccess_SpecificTitleDetail, viewModel.uiState.value)
     }
 
     @Test
-    fun `requestArticleDetails with empty title returns error and updates uiState`() = runTest {
+    fun `requestCharacterDetails with empty title returns error and updates uiState`() = runTest {
         val viewModel = DetailsViewModel(useCase, dispatcher)
 
-        viewModel.requestArticleDetails("")
+        viewModel.requestCharacterDetails(1)
 
         assertEquals(dummyError_DetailsState, viewModel.uiState.value)
     }
