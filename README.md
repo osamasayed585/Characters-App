@@ -6,6 +6,8 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
+[![Android CI](https://github.com/osamasayed585/Characters-App/actions/workflows/job_lint_debug.yml/badge.svg?branch=master)](https://github.com/osamasayed585/Characters-App/actions/workflows/job_lint_debug.yml)
+[![Android CD](https://github.com/osamasayed585/Characters-App/actions/workflows/deploy_to_firebase.yml/badge.svg?branch=master)](https://github.com/osamasayed585/Characters-App/actions/workflows/deploy_to_firebase.yml)
 
 
 ## Overview
