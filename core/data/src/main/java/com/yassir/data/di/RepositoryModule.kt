@@ -4,7 +4,7 @@ package com.yassir.data.di
 import com.yassir.common.di.DispatcherProvider
 import com.yassir.data.remote.CharactersService
 import com.yassir.data.repository.characters.GetCharactersRepositoryImp
-import com.yassir.data.repository.characters.SearchCharacterImp
+import com.yassir.data.repository.search.SearchCharacterImp
 import com.yassir.data.repository.details.CharacterDetailsRepositoryImp
 import com.yassir.datastore.LocalDataStore
 import com.yassir.domain.repository.CharacterDetailsRepository

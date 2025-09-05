@@ -1,4 +1,4 @@
-package com.yassir.data.repository.characters
+package com.yassir.data.repository.search
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig

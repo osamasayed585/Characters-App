@@ -20,7 +20,7 @@ class CharacterDetailsRepositoryImp @Inject constructor(
     override suspend fun requestCharacterDetails(id: Int) = safeApiCall(
         errorHandler = errorHandler,
         dispatcher = dispatcherProvider,
-        apiCall = { apiService.requestCharacterDetail(id) },
+        apiCall = { apiService.fetchCharacterDetail(id) },
         apiResultOf = { character: CharacterDto -> Result.success(character.asExternalUiModel()) }
     )
 }

@@ -22,7 +22,7 @@ class CharacterDataSource(
         return safeApiCall(
             errorHandler = errorHandler,
             dispatcher = dispatcherProvider,
-            apiCall = { apiService.requestCharacters(page = page) },
+            apiCall = { apiService.fetchCharacters(page = page) },
             apiResultOf = { response -> Result.success(response) }
         ).fold(
             onSuccess = { characters: CharactersResponse ->

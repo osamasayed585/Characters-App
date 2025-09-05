@@ -96,7 +96,9 @@ fun HomeScreen(
     characterState: LazyListState,
     onNavToDetails: (Int) -> Unit,
 ) {
-
+    val refreshState = characters.loadState.refresh
+    val appendState = characters.loadState.append
+    
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -105,73 +107,67 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         state = characterState
     ) {
-        items(count = characters.itemCount) {
-            characters[it]?.let { character ->
-                CharacterItem(
-                    uiState = character,
-                    onCLick = { onNavToDetails(character.id) }
-                )
+        if (refreshState is LoadState.Loading) {
+            items(10) {
+                CharacterShimmerItem()
             }
         }
 
-        characters.apply {
-            loadState.append.let { appendState ->
-                when (appendState) {
-                    is LoadState.Loading -> {
-                        items(10) {
-                            CharacterShimmerItem()
-                        }
+        else if (refreshState is LoadState.Error) {
+            val error = refreshState.error
+            item {
+                if (error is HttpException && error.code() == 404) {
+                    NoResultsPlaceholder(
+                        message = stringResource(
+                            R.string.no_characters_found_for,
+                            uiState.searchQuery
+                        )
+                    )
+                } else {
+                    ErrorCard(subtitle = error.message) {
+                        characters.refresh()
                     }
-
-                    is LoadState.Error -> {
-                        item {
-                            ErrorCard(subtitle = appendState.error.message) {
-                                characters.retry()
-                            }
-                        }
-                    }
-
-                    else -> Unit
                 }
             }
+        }
 
-            loadState.refresh.let { refreshState ->
-                when (refreshState) {
-                    is LoadState.Error -> {
-                        val error: Throwable = refreshState.error
-                        Timber.e("Error From Here: $error")
-                        when {
-                            error is HttpException && error.code() == 404 -> {
-                                item {
-                                    NoResultsPlaceholder(
-                                        message = stringResource(
-                                            R.string.no_characters_found_for,
-                                            uiState.searchQuery
-                                        )
-                                    )
-                                }
-                            }
-                            else -> {
-                                item {
-                                    ErrorCard(subtitle = error.message) {
-                                        characters.refresh()
-                                    }
-                                }
-                            }
+        else {
+            if (characters.itemCount == 0) {
+                item {
+                    NoResultsPlaceholder(
+                        message = stringResource(
+                            R.string.no_characters_found_for,
+                            uiState.searchQuery
+                        )
+                    )
+                }
+            } else {
+                items(count = characters.itemCount) { index ->
+                    characters[index]?.let { character ->
+                        CharacterItem(
+                            uiState = character,
+                            onCLick = { onNavToDetails(character.id) }
+                        )
+                    }
+                }
+
+                if (appendState is LoadState.Loading) {
+                    items(10) {
+                        CharacterShimmerItem()
+                    }
+                }
+                else if (appendState is LoadState.Error) {
+                    item {
+                        ErrorCard(
+                            subtitle = appendState.error.message
+                        ) {
+                            characters.retry()
                         }
                     }
-                    is LoadState.Loading -> {
-                        items(10) {
-                            CharacterShimmerItem()
-                        }
-                    }
-
-                    else -> Unit
                 }
             }
         }
     }
-
 }
 
 @Composable

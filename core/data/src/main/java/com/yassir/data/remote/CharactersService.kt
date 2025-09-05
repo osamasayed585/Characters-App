@@ -12,7 +12,7 @@ import retrofit2.http.Query
 interface CharactersService {
 
     @GET("character")
-    suspend fun requestCharacters(
+    suspend fun fetchCharacters(
         @Query("pageSize") pageSize: Int = PAGE_SIZE,
         @Query("page") page: Int = INITIAL_PAGE,
     ): Response<CharactersResponse>
@@ -22,8 +22,8 @@ interface CharactersService {
         @Query("pageSize") pageSize: Int = PAGE_SIZE,
         @Query("page") page: Int = INITIAL_PAGE,
         @Query("name") name: String
-    ): Response<CharactersResponse>
+    ): CharactersResponse
 
     @GET("character/{id}")
-    suspend fun requestCharacterDetail(@Path("id") id: Int): Response<CharacterDto>
+    suspend fun fetchCharacterDetail(@Path("id") id: Int): Response<CharacterDto>
 }
