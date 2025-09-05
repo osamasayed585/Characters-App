@@ -83,4 +83,4 @@ This modular structure ensures:
 ### Build & Run
 1. Clone this repository:
    ```bash
-   git clone https://github.com/osamasayed585/Rick-Morty-Characters.git
+   git clone https://github.com/osamasayed585/Characters-App.git
