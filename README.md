@@ -71,6 +71,9 @@ This modular structure ensures:
 - **Scalability** for new features.  
 - **Reusability** of common components.  
 - **Testability** of each layer.  
+<p align="start">
+  <img src="screens/architecture.png" alt="Architecture For Characters App"/>
+</p>
 
 
 ---
