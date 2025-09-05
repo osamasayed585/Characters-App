@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.stateIn
 
 
 @Composable
-fun rememberJetNewsState(
+fun rememberRmcState(
     navController: NavHostController,
     networkMonitor: NetworkMonitor,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),

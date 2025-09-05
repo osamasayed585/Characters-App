@@ -2,12 +2,14 @@ package com.yassir.data.di
 
 
 import com.yassir.common.di.DispatcherProvider
-import com.yassir.data.remote.ArticlesService
-import com.yassir.data.repository.articles.CharactersRepositoryImp
-import com.yassir.data.repository.details.ArticleDetailsRepositoryImp
+import com.yassir.data.remote.CharactersService
+import com.yassir.data.repository.characters.GetCharactersRepositoryImp
+import com.yassir.data.repository.characters.SearchCharacterImp
+import com.yassir.data.repository.details.CharacterDetailsRepositoryImp
 import com.yassir.datastore.LocalDataStore
 import com.yassir.domain.repository.CharacterDetailsRepository
-import com.yassir.domain.repository.CharactersRepository
+import com.yassir.domain.repository.GetCharactersRepository
+import com.yassir.domain.repository.SearchCharacterRepository
 import com.yassir.network.di.errorHandler.entities.ErrorHandler
 import dagger.Module
 import dagger.Provides
@@ -21,14 +23,14 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideArticlesRepository(
-        articlesService: ArticlesService,
+    fun provideSearchCharacterRepository(
+        charactersService: CharactersService,
         preferences: LocalDataStore,
         dispatcherProvider: DispatcherProvider,
         errorHandler: ErrorHandler
-    ): CharactersRepository {
-        return CharactersRepositoryImp(
-            apiService = articlesService,
+    ): SearchCharacterRepository {
+        return SearchCharacterImp(
+            apiService = charactersService,
             preferences = preferences,
             dispatcherProvider = dispatcherProvider,
             errorHandler = errorHandler
@@ -37,14 +39,30 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideArticleDetailsRepository(
-        articlesService: ArticlesService,
+    fun provideCharactersRepository(
+        charactersService: CharactersService,
+        preferences: LocalDataStore,
+        dispatcherProvider: DispatcherProvider,
+        errorHandler: ErrorHandler
+    ): GetCharactersRepository {
+        return GetCharactersRepositoryImp(
+            apiService = charactersService,
+            preferences = preferences,
+            dispatcherProvider = dispatcherProvider,
+            errorHandler = errorHandler
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCharacterDetailsRepository(
+        charactersService: CharactersService,
         preferences: LocalDataStore,
         dispatcherProvider: DispatcherProvider,
         errorHandler: ErrorHandler
     ): CharacterDetailsRepository {
-        return ArticleDetailsRepositoryImp(
-            apiService = articlesService,
+        return CharacterDetailsRepositoryImp(
+            apiService = charactersService,
             preferences = preferences,
             dispatcherProvider = dispatcherProvider,
             errorHandler = errorHandler

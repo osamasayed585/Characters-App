@@ -3,8 +3,11 @@
     <string name="unexpected_error_msg">unexpected error</string>
     <string name="unexpected_error_image">unexpected error image</string>
     <string name="retry">Retry</string>
-    <string name="loading">Loading...</string>
-    <string name="r_m_c">Rick and Morty Characters</string>
+    <string name="loading">Loading…</string>
+    <string name="app_name">Rick and Morty Characters</string>
     <string name="back">back\n</string>
-    <string name="detail">Detail</string>
+    <string name="detail">Character Details</string>
+    <string name="an_unexpected_error_occurred">An unexpected error occurred. Please try again later.</string>
+    <string name="something_went_wrong">something went wrong</string>
+    <string name="search_characters">Search characters…</string>
 </resources>

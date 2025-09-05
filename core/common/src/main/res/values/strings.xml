@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="not_connected">⚠️ You aren’t connected to the internet</string>
-    <string name="this_is_an_image_of_character">this is an image of character</string>
 </resources>
