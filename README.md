@@ -1,7 +1,8 @@
-<h1 align="center">Rick & Morty Characters</h1>
 <p align="center">
-  <img src="screens/cover.png" alt="Rick & Morty App Cover" width="300"/>
+  <img src="screens/cover.png" alt="Rick & Morty App Cover"/>
 </p>
+
+# Characters App
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
@@ -82,4 +83,4 @@ This modular structure ensures:
 ### Build & Run
 1. Clone this repository:
    ```bash
-   git clone https://github.com/osamasayed585/Rick-Morty-Characters.git
+   git clone https://github.com/osamasayed585/Characters-App.git
