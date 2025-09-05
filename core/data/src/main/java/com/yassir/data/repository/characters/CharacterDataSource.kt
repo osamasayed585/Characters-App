@@ -1,18 +1,17 @@
-package com.yassir.data.repository.articles
+package com.yassir.data.repository.characters
 
-import androidx.compose.ui.text.input.KeyboardCapitalization.Companion.Characters
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.yassir.common.di.DispatcherProvider
 import com.yassir.common.utils.Constants.INITIAL_PAGE
-import com.yassir.data.remote.ArticlesService
+import com.yassir.data.remote.CharactersService
 import com.yassir.model.beans.CharacterDto
 import com.yassir.model.response.CharactersResponse
 import com.yassir.network.di.errorHandler.entities.ErrorHandler
 import com.yassir.network.di.errorHandler.safeApiCall
 
 class CharacterDataSource(
-    private val apiService: ArticlesService,
+    private val apiService: CharactersService,
     private val errorHandler: ErrorHandler,
     private val dispatcherProvider: DispatcherProvider,
 ) : PagingSource<Int, CharacterDto>() {
@@ -23,18 +22,14 @@ class CharacterDataSource(
         return safeApiCall(
             errorHandler = errorHandler,
             dispatcher = dispatcherProvider,
-            apiCall = {
-                apiService.requestCharacters(page = page)
-            },
-            apiResultOf = { response ->
-                Result.success(response)
-            }
+            apiCall = { apiService.requestCharacters(page = page) },
+            apiResultOf = { response -> Result.success(response) }
         ).fold(
-            onSuccess = { characters: List<CharacterDto> ->
+            onSuccess = { characters: CharactersResponse ->
                 LoadResult.Page(
-                    data = characters,
+                    data = characters.results,
                     prevKey = if (page == INITIAL_PAGE) null else page.minus(1),
-                    nextKey = if (characters.isEmpty()) null else page.plus(1),
+                    nextKey = if (characters.results.isEmpty()) null else page.plus(1),
                 )
             },
             onFailure = { it: Throwable ->

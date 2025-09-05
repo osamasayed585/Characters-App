@@ -21,7 +21,7 @@ class CacheInterceptor(private val preferences: LocalDataStore) : Interceptor {
         }
 
         // Log token
-        Timber.d("droidOs -> token: $token")
+        Timber.d(" -> token: $token")
 
         // Proceed with the request
         val response = chain.proceed(requestBuilder.build())

@@ -3,6 +3,7 @@ package com.yassir.common.base
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 
 /**
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 abstract class BaseViewModel<T : ScreenState, in E : ScreenEvent>(initialVal: T) : ViewModel() {
 
     private var _uiState = MutableStateFlow(initialVal)
+    val state: T get() = _uiState.value
     val uiState: StateFlow<T> get() = _uiState
 
 
@@ -24,6 +26,10 @@ abstract class BaseViewModel<T : ScreenState, in E : ScreenEvent>(initialVal: T)
 
     fun createNewState(newState: T) {
         _uiState.tryEmit(newState)
+    }
+
+    fun updateState(update: T.() -> T) {
+        _uiState.update { currentState -> currentState.update() }
     }
 
     abstract fun reduce(oldState: T, sideEffect: E)

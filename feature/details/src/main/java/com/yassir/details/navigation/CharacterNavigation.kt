@@ -6,19 +6,20 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.yassir.common.utils.Constants
 import com.yassir.common.utils.Screen
-import com.yassir.details.ArticleDetailsRoute
+import com.yassir.details.CharacterDetailsRoute
 
 
 fun NavGraphBuilder.characterDetailsScreen(snackbarHostState: SnackbarHostState) {
     composable(
-        route = Screen.DetailScreen.route + "/{${""}}",
-        arguments = listOf(navArgument("") { type = NavType.StringType })
+        route = Screen.DetailScreen.route,
+        arguments = listOf(navArgument(Constants.ID) { type = NavType.IntType })
     ) {
-        ArticleDetailsRoute(snackbarHostState)
+        CharacterDetailsRoute(snackbarHostState)
     }
 }
 
 
-fun NavController.navigateToCharacterDetails(title: String) =
-    navigate(Screen.DetailScreen.route + "/${title}")
+fun NavController.navigateToCharacterDetails(id: Int) =
+    navigate(Screen.DetailScreen.createRoute(id))

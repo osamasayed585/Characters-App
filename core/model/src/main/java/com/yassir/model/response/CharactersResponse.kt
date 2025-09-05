@@ -4,6 +4,6 @@ import com.yassir.model.beans.CharacterDto
 import com.yassir.model.beans.PageInfo
 
 data class CharactersResponse(
+    val results: List<CharacterDto>,
     val info: PageInfo,
-    val results: List<CharacterDto>
 )

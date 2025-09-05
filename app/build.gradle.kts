@@ -96,4 +96,7 @@ dependencies {
 
     // timber
     implementation(libs.timber)
+
+    /// shimmer
+    implementation(libs.compose.shimmer)
 }

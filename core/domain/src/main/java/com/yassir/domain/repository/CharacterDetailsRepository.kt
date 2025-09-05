@@ -5,5 +5,5 @@ import com.yassir.model.beans.CharacterUIModel
 
 interface CharacterDetailsRepository {
 
-    suspend fun requestCharacterDetails(query: String): Result<CharacterUIModel>
+    suspend fun requestCharacterDetails(id: Int): Result<CharacterUIModel>
 }
