@@ -5,7 +5,7 @@ import com.yassir.common.di.DispatcherProvider
 import com.yassir.data.remote.CharactersService
 import com.yassir.data.repository.characters.GetCharactersRepositoryImp
 import com.yassir.data.repository.search.SearchCharacterImp
-import com.yassir.data.repository.details.CharacterDetailsRepositoryImp
+import com.yassir.data.repository.details.DetailsRepositoryImp
 import com.yassir.datastore.LocalDataStore
 import com.yassir.domain.repository.CharacterDetailsRepository
 import com.yassir.domain.repository.GetCharactersRepository
@@ -61,7 +61,7 @@ object RepositoryModule {
         dispatcherProvider: DispatcherProvider,
         errorHandler: ErrorHandler
     ): CharacterDetailsRepository {
-        return CharacterDetailsRepositoryImp(
+        return DetailsRepositoryImp(
             apiService = charactersService,
             preferences = preferences,
             dispatcherProvider = dispatcherProvider,

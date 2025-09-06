@@ -10,7 +10,7 @@ import com.yassir.network.di.errorHandler.entities.ErrorHandler
 import com.yassir.network.di.errorHandler.safeApiCall
 import javax.inject.Inject
 
-class CharacterDetailsRepositoryImp @Inject constructor(
+class DetailsRepositoryImp @Inject constructor(
     private val apiService: CharactersService,
     private val preferences: LocalDataStore,
     private val dispatcherProvider: DispatcherProvider,

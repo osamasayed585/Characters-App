@@ -25,7 +25,7 @@ class GetCharactersRepositoryImp @Inject constructor(
 ) : GetCharactersRepository {
 
 
-    override fun requestCharacters(): Flow<PagingData<CharacterUIModel>> {
+    override fun fetchCharacters(): Flow<PagingData<CharacterUIModel>> {
         return Pager(
             config = PagingConfig(
                 initialLoadSize = Constants.PAGE_SIZE,

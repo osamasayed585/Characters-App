@@ -21,7 +21,7 @@ class GetCharacterUseCase @Inject constructor(
      * @return A flow of PagingData containing the characters.
      */
     operator fun invoke(): Flow<PagingData<CharacterUIModel>> {
-        return getCharactersRepository.requestCharacters()
+        return getCharactersRepository.fetchCharacters()
     }
 
 }

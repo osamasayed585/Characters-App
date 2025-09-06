@@ -1,35 +1,54 @@
 package com.yassir.data.repository.characters
 
-import androidx.paging.PagingData
-import com.yassir.common.di.DispatcherProvider
+import app.cash.turbine.test
+import com.yassir.data.TestDispatcherProvider
+import com.yassir.data.mockCharactersResponse
+import com.yassir.data.mockResponse
 import com.yassir.data.remote.CharactersService
 import com.yassir.datastore.LocalDataStore
-import com.yassir.model.beans.CharacterUIModel
 import com.yassir.network.di.errorHandler.entities.ErrorHandler
+import io.mockk.clearAllMocks
+import io.mockk.coEvery
+import io.mockk.junit4.MockKRule
 import io.mockk.mockk
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.test.runTest
+import org.amshove.kluent.shouldBe
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 class GetCharactersRepositoryImpTest {
 
-    private val mockApiService: CharactersService = mockk()
-    private val mockPreferences: LocalDataStore = mockk()
-    private val mockDispatcherProvider: DispatcherProvider = mockk()
-    private val errorHandler: ErrorHandler = mockk()
+    @get:Rule(order = 0)
+    val mockkRule = MockKRule(this)
+    private lateinit var sut: GetCharactersRepositoryImp
+    private val dispatcherProvider = TestDispatcherProvider()
+    private val apiService = mockk<CharactersService>()
+    private val preferences = mockk<LocalDataStore>()
+    private val errorHandler = mockk<ErrorHandler>()
+
+    @Before
+    fun setUp() {
+        sut = GetCharactersRepositoryImp(apiService, preferences, dispatcherProvider, errorHandler)
+    }
+
+    @After
+    fun tearDown() {
+        clearAllMocks()
+    }
+
 
     @Test
-    fun `Given a query, When requestCharacters is called, Then it should return a flow of PagingData`() =
+    fun `Given a query, When fetchCharacters is called, Then it should return a flow of PagingData`() =
         runTest {
-            val repo = GetCharactersRepositoryImp(
-                apiService = mockApiService,
-                preferences = mockPreferences,
-                dispatcherProvider = mockDispatcherProvider,
-                errorHandler = errorHandler
-            )
+            coEvery { apiService.fetchCharacters() } returns mockResponse
 
-            val result: Flow<PagingData<CharacterUIModel>> = repo.requestCharacters()
 
-    }
+            val result = sut.fetchCharacters()
+            result.test {
+                awaitItem() shouldBe mockCharactersResponse
+            }
+        }
 
 }

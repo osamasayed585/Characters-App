@@ -14,5 +14,5 @@ interface GetCharactersRepository {
      *
      * @return A [Flow] emitting [PagingData] of [CharacterUIModel].
      */
-    fun requestCharacters(): Flow<PagingData<CharacterUIModel>>
+    fun fetchCharacters(): Flow<PagingData<CharacterUIModel>>
 }

@@ -20,7 +20,7 @@ class FakeGetCharactersRepositoryImp : GetCharactersRepository {
         this.shouldThrowError = shouldThrow
     }
 
-    override fun requestCharacters(): Flow<PagingData<CharacterUIModel>> {
+    override fun fetchCharacters(): Flow<PagingData<CharacterUIModel>> {
         return if (shouldThrowError) {
             flow { throw RuntimeException("Test error") }
         } else {
