@@ -19,13 +19,28 @@ This Android application is built with **Kotlin** and **Jetpack Compose**. It fe
 
 ### Screen 1: Character List
 - Displays a paginated list of characters (20 per page).  
-- Each character item shows: **Name, Image, Species**.  
 - Supports **searching** characters by name.  
-- Handles **loading, error, and empty states**.  
+- Handles **loading, error, network, empty states, and support ry again**.  
 - On item tap → navigates to details screen.
+- Support Dark & Light mode<p align="center">
 
-### Screen 2: Character Details
-- Shows character details: **Name, Image, Species, Status**.
+  <table align="center">
+    <tr>
+      <td align="center"><img src="screens/shimmer.jpeg" alt="Shimmer Effect" width="150"/></td>
+      <td align="center"><img src="screens/network_error.jpeg" alt="Network Error" width="150"/></td>
+      <td align="center"><img src="screens/error_state.jpeg" alt="Error State" width="150"/></td>
+      <td align="center"><img src="screens/page_error.jpeg" alt="Page Error" width="150"/></td>
+      <td align="center"><img src="screens/empty_state.jpeg" alt="Empty State" width="150"/></td>
+    </tr>
+    <tr>
+      <td align="center">Shimmer Effect</td>
+      <td align="center">Network Error</td>
+      <td align="center">Error State</td>
+      <td align="center">Page Error</td>
+      <td align="center">Empty State</td>
+    </tr>
+  </table>
+</p>
 
 ---
 
