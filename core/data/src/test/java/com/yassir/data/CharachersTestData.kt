@@ -5,30 +5,32 @@ import com.yassir.model.beans.LocationDto
 import com.yassir.model.beans.OriginDto
 import com.yassir.model.beans.PageInfo
 import com.yassir.model.response.CharactersResponse
+import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 
+val character1 = CharacterDto(
+    id = 1,
+    name = "Rick Sanchez",
+    status = "Alive",
+    species = "Human",
+    type = "",
+    gender = "Male",
+    origin = OriginDto(
+        name = "Earth (C-137)",
+        url = "https://rickandmortyapi.com/api/location/1"
+    ),
+    location = LocationDto(
+        name = "Hope Reilly",
+        url = "http://www.bing.com/search?q=placerat"
+    ),
+    image = "eos",
+    episode = listOf(),
+    url = "https://search.yahoo.com/search?p=equidem",
+    created = "voluptatibus"
+)
 
 val charactersResponse = listOf(
-    CharacterDto(
-        id = 1,
-        name = "Rick Sanchez",
-        status = "Alive",
-        species = "Human",
-        type = "",
-        gender = "Male",
-        origin = OriginDto(
-            name = "Earth (C-137)",
-            url = "https://rickandmortyapi.com/api/location/1"
-        ),
-        location = LocationDto(
-            name = "Hope Reilly",
-            url = "http://www.bing.com/search?q=placerat"
-        ),
-        image = "eos",
-        episode = listOf(),
-        url = "https://search.yahoo.com/search?p=equidem",
-        created = "voluptatibus"
-    ),
+    character1,
     CharacterDto(
         id = 2,
         name = "Morty Rich",
@@ -52,7 +54,6 @@ val charactersResponse = listOf(
 
     )
 
-// Create a CharactersResponse containing your mock data
 val mockCharactersResponse = CharactersResponse(
     info = PageInfo(
         count = charactersResponse.size,
@@ -63,5 +64,7 @@ val mockCharactersResponse = CharactersResponse(
     results = charactersResponse
 )
 
-// Create a successful Response object
+
 val mockResponse: Response<CharactersResponse> = Response.success(mockCharactersResponse)
+val mockCharacterResponse: Response<CharacterDto> = Response.success(character1)
+val errorResponse: Response<CharacterDto> = Response.error(404, "Response.error()".toResponseBody())
