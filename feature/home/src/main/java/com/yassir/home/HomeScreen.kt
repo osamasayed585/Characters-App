@@ -29,7 +29,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -51,7 +50,6 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.yassir.design.components.ErrorCard
-import com.yassir.design.components.FullScreenLoading
 import com.yassir.design.components.LoadingImage
 import com.yassir.design.theme.RMCTheme
 import com.yassir.home.event.HomeEvents
@@ -59,7 +57,6 @@ import com.yassir.home.uiState.HomeUiState
 import com.yassir.model.beans.CharacterUIModel
 import kotlinx.coroutines.delay
 import retrofit2.HttpException
-import timber.log.Timber
 
 
 @Composable
@@ -98,7 +95,7 @@ fun HomeScreen(
 ) {
     val refreshState = characters.loadState.refresh
     val appendState = characters.loadState.append
-    
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -124,7 +121,7 @@ fun HomeScreen(
                         )
                     )
                 } else {
-                    ErrorCard(subtitle = error.message) {
+                    ErrorCard {
                         characters.refresh()
                     }
                 }
@@ -158,9 +155,7 @@ fun HomeScreen(
                 }
                 else if (appendState is LoadState.Error) {
                     item {
-                        ErrorCard(
-                            subtitle = appendState.error.message
-                        ) {
+                        ErrorCard {
                             characters.retry()
                         }
                     }

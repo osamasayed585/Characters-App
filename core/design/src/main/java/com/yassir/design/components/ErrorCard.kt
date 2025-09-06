@@ -25,9 +25,8 @@ import com.yassir.design.R
 
 @Composable
 fun ErrorCard(
-    modifier: Modifier = Modifier,
     subtitle: String? = null,
-    onTapRetry: (() -> Unit)
+    onTapRetry: () -> Unit
 ) {
     Card(
         Modifier
