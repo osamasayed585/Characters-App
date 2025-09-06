@@ -22,12 +22,8 @@ class DetailsViewModel @Inject constructor(
 ) : BaseViewModel<DetailsUiState, DetailsEvent>(DetailsUiState()) {
 
     init {
-        createNewState(
-            uiState.value.copy(
-                id = savedStateHandle.get<Int>(Constants.ID) ?: -1
-            )
-        )
-        fetchCharacterDetails(uiState.value.id)
+        updateState { copy(id = savedStateHandle.get<Int>(Constants.ID) ?: -1) }
+        fetchCharacterDetails(state.id)
     }
 
     /**
