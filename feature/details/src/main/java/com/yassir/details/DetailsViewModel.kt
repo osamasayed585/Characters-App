@@ -27,7 +27,7 @@ class DetailsViewModel @Inject constructor(
                 id = savedStateHandle.get<Int>(Constants.ID) ?: -1
             )
         )
-        requestCharacterDetails(uiState.value.id)
+        fetchCharacterDetails(uiState.value.id)
     }
 
     /**
@@ -43,6 +43,7 @@ class DetailsViewModel @Inject constructor(
             is DetailsEvent.OnGetCharacterDetails -> createNewState(
                 oldState.copy(
                     apiState = DetailApiState.Success,
+                    id = sideEffect.character.id,
                     name = sideEffect.character.name,
                     image = sideEffect.character.image,
                     status = sideEffect.character.status,
@@ -70,7 +71,7 @@ class DetailsViewModel @Inject constructor(
      *
      * @param id The ID of the character to request details for.
      */
-    fun requestCharacterDetails(id: Int) = viewModelScope.launch(dispatcher.io) {
+    fun fetchCharacterDetails(id: Int) = viewModelScope.launch(dispatcher.io) {
         getCharacterDetailsUseCase(id).fold(
             onSuccess = { character ->
                 emitEvent(DetailsEvent.OnGetCharacterDetails(character))

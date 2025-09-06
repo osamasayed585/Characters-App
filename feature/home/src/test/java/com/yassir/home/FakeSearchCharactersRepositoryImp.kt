@@ -20,7 +20,7 @@ class FakeSearchCharactersRepositoryImp : SearchCharacterRepository {
         this.shouldThrowError = shouldThrow
     }
 
-    override suspend fun searchCharacter(name: String): Flow<PagingData<CharacterUIModel>> {
+    override suspend fun searchCharacters(name: String): Flow<PagingData<CharacterUIModel>> {
         return if (shouldThrowError) {
             flow { throw RuntimeException("Test error") }
         } else {

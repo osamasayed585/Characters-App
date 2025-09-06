@@ -16,5 +16,5 @@ interface SearchCharacterRepository {
      * @return A [CharacterUIModel] representing the found character.
      * @throws NoSuchElementException if no character with the specified name is found.
      */
-    suspend fun searchCharacter(name: String): Flow<PagingData<CharacterUIModel>>
+    suspend fun searchCharacters(name: String): Flow<PagingData<CharacterUIModel>>
 }

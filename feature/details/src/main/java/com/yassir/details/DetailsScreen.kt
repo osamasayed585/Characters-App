@@ -60,7 +60,7 @@ fun CharacterDetailsRoute(snackbarHostState: SnackbarHostState) {
     CharacterDetails(
         uiState = uiState,
         onRetry = {
-            viewModel.requestCharacterDetails(uiState.id)
+            viewModel.fetchCharacterDetails(uiState.id)
         }
     )
 

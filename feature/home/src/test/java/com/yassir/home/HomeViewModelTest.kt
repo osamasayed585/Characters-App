@@ -32,6 +32,7 @@ class HomeViewModelTest {
     @Before
     fun setup() {
         fakeRepository = FakeGetCharactersRepositoryImp()
+        fakeSearchRepository = FakeSearchCharactersRepositoryImp()
         val getCharactersUseCase =  GetCharacterUseCase(fakeRepository)
         val getSearchUseCase = GetSearchUseCase(fakeSearchRepository)
         useCases = CharactersUseCases(getCharactersUseCase, getSearchUseCase)

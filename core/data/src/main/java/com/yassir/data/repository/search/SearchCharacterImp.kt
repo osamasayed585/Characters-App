@@ -25,7 +25,7 @@ class SearchCharacterImp @Inject constructor(
 ) : SearchCharacterRepository {
 
 
-    override suspend fun searchCharacter(name: String): Flow<PagingData<CharacterUIModel>> {
+    override suspend fun searchCharacters(name: String): Flow<PagingData<CharacterUIModel>> {
         return Pager(
             config = PagingConfig(
                 initialLoadSize = Constants.PAGE_SIZE,
