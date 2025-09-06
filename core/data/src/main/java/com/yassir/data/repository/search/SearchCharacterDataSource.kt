@@ -2,19 +2,13 @@ package com.yassir.data.repository.search
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.yassir.common.di.DispatcherProvider
 import com.yassir.common.utils.Constants.INITIAL_PAGE
 import com.yassir.data.remote.CharactersService
 import com.yassir.model.beans.CharacterDto
-import com.yassir.model.response.CharactersResponse
-import com.yassir.network.di.errorHandler.entities.ErrorHandler
-import com.yassir.network.di.errorHandler.safeApiCall
 import retrofit2.HttpException
 
 class SearchCharacterDataSource(
     private val apiService: CharactersService,
-    private val errorHandler: ErrorHandler,
-    private val dispatcherProvider: DispatcherProvider,
     private val name: String
 ) : PagingSource<Int, CharacterDto>() {
 

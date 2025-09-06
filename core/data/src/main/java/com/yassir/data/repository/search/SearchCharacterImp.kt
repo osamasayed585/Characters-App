@@ -36,8 +36,6 @@ class SearchCharacterImp @Inject constructor(
             pagingSourceFactory = {
                 SearchCharacterDataSource(
                     apiService = apiService,
-                    errorHandler = errorHandler,
-                    dispatcherProvider = dispatcherProvider,
                     name = name
                 )
             },
