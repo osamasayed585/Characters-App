@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.yassir.common.base.BaseViewModel
 import com.yassir.common.di.DispatcherProvider
 import com.yassir.common.utils.Constants
-import com.yassir.details.event.DetailsEvent
+import com.yassir.details.actions.DetailsAction
 import com.yassir.details.state.DetailsUiState
 import com.yassir.details.state.DetailsUiState.DetailApiState
 import com.yassir.domain.useCases.GetCharacterDetailsUseCase
@@ -19,7 +19,7 @@ class DetailsViewModel @Inject constructor(
     private val getCharacterDetailsUseCase: GetCharacterDetailsUseCase,
     private val dispatcher: DispatcherProvider,
     savedStateHandle: SavedStateHandle = SavedStateHandle(),
-) : BaseViewModel<DetailsUiState, DetailsEvent>(DetailsUiState()) {
+) : BaseViewModel<DetailsUiState, DetailsAction>(DetailsUiState()) {
 
     init {
         updateState { copy(id = savedStateHandle.get<Int>(Constants.ID) ?: -1) }
@@ -30,27 +30,27 @@ class DetailsViewModel @Inject constructor(
      * Handles side effects emitted by the ViewModel and updates the UI state accordingly.
      *
      * @param oldState The current UI state.
-     * @param sideEffect The side effect to handle.
+     * @param action The side effect to handle.
      */
-    override fun reduce(oldState: DetailsUiState, sideEffect: DetailsEvent) {
-        when (sideEffect) {
-            is DetailsEvent.ClearError -> createNewState(oldState.copy(errorEntity = null))
+    override fun processAction(oldState: DetailsUiState, action: DetailsAction) {
+        when (action) {
+            is DetailsAction.ClearError -> createNewState(oldState.copy(errorEntity = null))
 
-            is DetailsEvent.OnGetCharacterDetails -> createNewState(
+            is DetailsAction.OnGetCharacterDetails -> createNewState(
                 oldState.copy(
                     apiState = DetailApiState.Success,
-                    id = sideEffect.character.id,
-                    name = sideEffect.character.name,
-                    image = sideEffect.character.image,
-                    status = sideEffect.character.status,
-                    species = sideEffect.character.species,
+                    id = action.character.id,
+                    name = action.character.name,
+                    image = action.character.image,
+                    status = action.character.status,
+                    species = action.character.species,
                 )
             )
 
-            is DetailsEvent.OnGetError -> createNewState(
+            is DetailsAction.OnGetError -> createNewState(
                 oldState.copy(
-                    apiState = DetailApiState.Error(sideEffect.type),
-                    errorEntity = sideEffect.type
+                    apiState = DetailApiState.Error(action.type),
+                    errorEntity = action.type
                 )
             )
         }
@@ -70,11 +70,11 @@ class DetailsViewModel @Inject constructor(
     fun fetchCharacterDetails(id: Int) = viewModelScope.launch(dispatcher.io) {
         getCharacterDetailsUseCase(id).fold(
             onSuccess = { character ->
-                emitEvent(DetailsEvent.OnGetCharacterDetails(character))
+                emitAction(DetailsAction.OnGetCharacterDetails(character))
             },
             onFailure = { throwable ->
                 val asErrorEntity = throwable.asErrorEntity()
-                emitEvent(DetailsEvent.OnGetError(asErrorEntity))
+                emitAction(DetailsAction.OnGetError(asErrorEntity))
             }
         )
     }

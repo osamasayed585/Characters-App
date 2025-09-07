@@ -13,15 +13,15 @@ import kotlinx.coroutines.flow.update
  * @param E The type of the screen event.
  * @property initialVal The initial value of the screen state.
  */
-abstract class BaseViewModel<T : ScreenState, in E : ScreenEvent>(initialVal: T) : ViewModel() {
+abstract class BaseViewModel<T : ScreenState, in E : ScreenAction>(initialVal: T) : ViewModel() {
 
     private var _uiState = MutableStateFlow(initialVal)
     val state: T get() = _uiState.value
     val uiState: StateFlow<T> get() = _uiState
 
 
-    fun emitEvent(event: E) {
-        reduce(_uiState.value, event)
+    fun emitAction(event: E) {
+        processAction(_uiState.value, event)
     }
 
     fun createNewState(newState: T) {
@@ -32,8 +32,8 @@ abstract class BaseViewModel<T : ScreenState, in E : ScreenEvent>(initialVal: T)
         _uiState.update { currentState -> currentState.update() }
     }
 
-    abstract fun reduce(oldState: T, sideEffect: E)
+    abstract fun processAction(oldState: T, action: E)
 }
 
 interface ScreenState
-interface ScreenEvent
+interface ScreenAction

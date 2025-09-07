@@ -6,17 +6,15 @@ package com.yassir.details
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.yassir.common.utils.Constants
-import com.yassir.details.event.DetailsEvent
+import com.yassir.details.actions.DetailsAction
 import com.yassir.details.state.DetailsUiState
 import com.yassir.domain.useCases.GetCharacterDetailsUseCase
-import com.yassir.model.beans.CharacterUIModel
 import com.yassir.network.di.errorHandler.entities.ErrorEntity
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -63,7 +61,7 @@ class DetailsViewModelTest {
         // in the UI state are correctly updated from the provided CharacterUIModel.
 
         val character = createMockCharacter()
-        sut.emitEvent(DetailsEvent.OnGetCharacterDetails(character))
+        sut.emitAction(DetailsAction.OnGetCharacterDetails(character))
 
         sut.uiState.test {
             val result = awaitItem()
@@ -78,7 +76,7 @@ class DetailsViewModelTest {
         // and the errorEntity in the UI state is updated with the provided error type.
         val errorMessage = "Error message"
         val errorType = ErrorEntity.Unknown(errorMessage)
-        sut.emitEvent(DetailsEvent.OnGetError(errorType))
+        sut.emitAction(DetailsAction.OnGetError(errorType))
 
         sut.uiState.test {
             val result = awaitItem()
@@ -91,7 +89,7 @@ class DetailsViewModelTest {
         // Verify that when DetailsEvent.OnGetError is processed, existing character data (id, name, image, status, species)
         // in the UI state remains unchanged.
         produceViewModel(-1)
-        sut.emitEvent(DetailsEvent.OnGetError(ErrorEntity.Unknown("Error Message")))
+        sut.emitAction(DetailsAction.OnGetError(ErrorEntity.Unknown("Error Message")))
 
         sut.uiState.test {
             val result = awaitItem()
@@ -104,7 +102,7 @@ class DetailsViewModelTest {
         // Verify that when DetailsEvent.ClearError is processed, only the errorEntity is set to null,
         // and all other fields in the UI state (including apiState and character data) remain unchanged.
 
-        sut.emitEvent(DetailsEvent.ClearError)
+        sut.emitAction(DetailsAction.ClearError)
 
         sut.uiState.test {
             val result = awaitItem()
@@ -118,7 +116,7 @@ class DetailsViewModelTest {
         // Test how fetchCharacterDetails handles an invalid character ID (e.g., -1, 0) passed as an argument.
         // Expect it to potentially result in an error state from the use case.
         produceViewModel(-1)
-        sut.emitEvent(DetailsEvent.OnGetError(ErrorEntity.Unknown("Error Message")))
+        sut.emitAction(DetailsAction.OnGetError(ErrorEntity.Unknown("Error Message")))
 
         sut.uiState.test {
             val result = awaitItem()

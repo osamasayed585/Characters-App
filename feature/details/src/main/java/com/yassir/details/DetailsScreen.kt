@@ -41,7 +41,7 @@ import com.yassir.design.components.FullScreenLoading
 import com.yassir.design.components.HandleError
 import com.yassir.design.theme.RMCTheme
 import com.yassir.design.theme.randomColor
-import com.yassir.details.event.DetailsEvent
+import com.yassir.details.actions.DetailsAction
 import com.yassir.details.state.DetailsUiState
 import com.yassir.network.di.errorHandler.entities.ErrorEntity
 
@@ -54,7 +54,7 @@ fun CharacterDetailsRoute(snackbarHostState: SnackbarHostState) {
     HandleError(
         snackBarHostState = snackbarHostState,
         error = uiState.errorEntity,
-        onDismiss = { viewModel.emitEvent(DetailsEvent.ClearError) }
+        onDismiss = { viewModel.emitAction(DetailsAction.ClearError) }
     )
 
     CharacterDetails(

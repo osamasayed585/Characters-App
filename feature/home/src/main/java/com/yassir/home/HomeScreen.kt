@@ -52,10 +52,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.yassir.design.components.ErrorCard
 import com.yassir.design.components.LoadingImage
 import com.yassir.design.theme.RMCTheme
-import com.yassir.home.event.HomeEvents
+import com.yassir.home.actions.HomeActions
 import com.yassir.home.uiState.HomeUiState
 import com.yassir.model.beans.CharacterUIModel
-import kotlinx.coroutines.delay
 import retrofit2.HttpException
 
 
@@ -70,7 +69,7 @@ fun HomesRoute(
     val uiState: HomeUiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(querySearch) {
-        viewModel.emitEvent(HomeEvents.OnQueryChange(querySearch))
+        viewModel.emitAction(HomeActions.OnQueryChange(querySearch))
     }
 
     HomeScreen(
