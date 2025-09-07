@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.yassir.design.theme.RMCTheme
-import com.yassir.navigation.richMortCharacters.MyRMCApp
+import com.yassir.navigation.richMortCharacters.RMCScaffold
 import com.yassir.navigation.util.networkMonitor.NetworkMonitor
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RMCTheme {
                 val navController = rememberNavController()
-                MyRMCApp(networkMonitor, navController)
+                RMCScaffold(networkMonitor, navController)
             }
         }
     }

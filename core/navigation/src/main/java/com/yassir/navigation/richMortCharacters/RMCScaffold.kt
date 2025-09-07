@@ -2,7 +2,6 @@ package com.yassir.navigation.richMortCharacters
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -22,7 +21,7 @@ import com.yassir.navigation.util.networkMonitor.NetworkMonitor
 import com.yassir.design.components.RMCTopBar
 
 @Composable
-fun MyRMCApp(
+fun RMCScaffold(
     networkMonitor: NetworkMonitor,
     navController: NavHostController,
     appState: RMCState = rememberRmcState(
