@@ -70,12 +70,7 @@ fun HomesRoute(
     val uiState: HomeUiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(querySearch) {
-        delay(500L)
-        if (querySearch.isNotBlank()) {
-            viewModel.emitEvent(HomeEvents.OnQueryChange(querySearch))
-        } else {
-            viewModel.emitEvent(HomeEvents.FetchAllCharacters)
-        }
+        viewModel.emitEvent(HomeEvents.OnQueryChange(querySearch))
     }
 
     HomeScreen(
