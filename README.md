@@ -16,7 +16,7 @@ This Android application is built with **Kotlin** and **Jetpack Compose**. It fe
 
 ---
 
-## 📱 Features
+## Features
 
 ### Screen 1: Character List
 - Displays a paginated list of characters (20 per page).  
@@ -45,7 +45,7 @@ This Android application is built with **Kotlin** and **Jetpack Compose**. It fe
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Kotlin** + **Jetpack Compose** for modern declarative UI.  
 - **Material 3** for design system.  
@@ -57,12 +57,12 @@ This Android application is built with **Kotlin** and **Jetpack Compose**. It fe
 - **Coil** for image loading.  
 - **Timber** for logging.  
 
-### 🧪 Testing
+### Testing
 - **JUnit4**, **MockK**, **Kluent**, **Turbine**.  
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 The project follows **Clean Architecture** and **Modularization** principles.
 
@@ -95,13 +95,6 @@ This modular structure ensures:
 ---
 
 ## 🚀 Getting Started
-
-### Prerequisites
-- Android Studio Ladybug (or newer).  
-- Minimum SDK: 24.  
-- Target SDK: 35.  
-
-### Build & Run
-1. Clone this repository:
+ Clone this repository:
    ```bash
    git clone https://github.com/osamasayed585/Characters-App.git
