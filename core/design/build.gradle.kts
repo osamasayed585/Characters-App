@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.yassir.design"
+    namespace = "com.droidos.design"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

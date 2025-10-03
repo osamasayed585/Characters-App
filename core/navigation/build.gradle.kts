@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.yassir.navigation"
+    namespace = "com.droidos.navigation"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

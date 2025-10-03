@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.yassir.datastore"
+    namespace = "com.droidos.datastore"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

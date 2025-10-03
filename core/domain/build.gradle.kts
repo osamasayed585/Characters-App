@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.yassir.domain"
+    namespace = "com.droidos.domain"
     compileSdk = 35
 
     defaultConfig {
