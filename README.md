@@ -51,15 +51,13 @@ This Android application is built with **Kotlin** and **Jetpack Compose**. It fe
 - **Material 3** for design system.  
 - **Hilt** for Dependency Injection.  
 - **Retrofit** + **OkHttp** + **Gson** for networking.  
-- **Kotlin Coroutines & Flow** for async operations.  
+- **Kotlin Coroutines & Flow** for async operations.
+- **Testing** JUnit4, MockK, Kluent, Turbine.  
 - **DataStore** for local persistence.  
 - **Paging 3** for pagination.  
-- **Coil** for image loading.  
-- **Timber** for logging.  
-
-### Testing
-- **JUnit4**, **MockK**, **Kluent**, **Turbine**.  
-
+- **Coil** for image loading. 
+- **CI/CD** Automated build & test pipelines for seamless integration.
+- **Timber** for logging.
 ---
 
 ## Architecture
