@@ -1,17 +1,12 @@
 name: Deploy to Firebase
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_notes:
-        type: string
-        required: true
-        default: 'Manual Debug Build'
-        description: 'Yassir - OsamaSayed - Release Notes'
+  push:
+    branches: [ master ]  # Trigger automatically when pushing to master
 
 jobs:
   build:
-    name: Building and distributing app
+    name: Build and Distribute App
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -27,14 +22,18 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Execute Gradle command - assembleDebug
+      - name: Build Debug APK
         run: ./gradlew assembleDebug
 
-      - name: Upload Artifact to Firebase App Distribution
+      - name: Get last commit message
+        id: get_commit
+        run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+
+      - name: Upload APK to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: ${{ inputs.release_notes }}
+          releaseNotes: ${{ steps.get_commit.outputs.message }}  # Use last commit message
