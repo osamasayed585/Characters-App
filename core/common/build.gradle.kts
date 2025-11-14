@@ -40,7 +40,7 @@ dependencies {
     // unit tests
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+    testImplementation(libs.kotlinx.coroutines.test)
 
     // hilt
     implementation(libs.androidx.hilt.navigation.compose)

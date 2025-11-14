@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.compose.material.icons)
 
     // unit testing
     testImplementation(libs.junit)
@@ -98,7 +99,7 @@ dependencies {
     // Paging 3
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
-    testImplementation("androidx.paging:paging-testing:3.3.0")
+    testImplementation(libs.androidx.paging.testing)
 
     // timber
     implementation(libs.timber)
