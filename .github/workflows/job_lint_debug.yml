@@ -1,8 +1,11 @@
 name: Code Linting
 
 on:
-  workflow_call:
-  workflow_dispatch:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+
 
 jobs:
   lint:
