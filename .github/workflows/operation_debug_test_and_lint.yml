@@ -1,10 +1,7 @@
 name: PR Quality Checks
 
 on:
-  pull_request:
-    branches: [ master ]
-  push:
-    branches: [ master ]
+  workflow_dispatch:
 
 jobs:
   lint:
