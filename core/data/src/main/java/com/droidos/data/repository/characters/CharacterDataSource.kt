@@ -15,15 +15,13 @@ class CharacterDataSource(
     private val errorHandler: ErrorHandler,
     private val dispatcherProvider: DispatcherProvider,
 ) : PagingSource<Int, CharacterDto>() {
-
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterDto> {
         val page = params.key ?: INITIAL_PAGE
         return safeApiCall(
             errorHandler = errorHandler,
             dispatcher = dispatcherProvider,
             apiCall = { apiService.fetchCharacters(page = page) },
-            apiResultOf = { response -> Result.success(response) }
+            apiResultOf = { response -> Result.success(response) },
         ).fold(
             onSuccess = { characters: CharactersResponse ->
                 LoadResult.Page(
@@ -35,14 +33,16 @@ class CharacterDataSource(
             onFailure = { it: Throwable ->
                 it.printStackTrace()
                 LoadResult.Error(Exception(it))
-            }
+            },
         )
     }
 
-    override fun getRefreshKey(state: PagingState<Int, CharacterDto>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
+    override fun getRefreshKey(state: PagingState<Int, CharacterDto>): Int? =
+        state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
-    }
+
+    fun foo(): String =
+        "Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint,"
 }

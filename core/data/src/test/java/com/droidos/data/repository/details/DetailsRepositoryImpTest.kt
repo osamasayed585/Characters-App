@@ -22,7 +22,6 @@ import org.junit.Test
 import retrofit2.Response
 
 class DetailsRepositoryImpTest {
-
     @get:Rule(order = 0)
     val mockkRule = MockKRule(this)
     private lateinit var sut: DetailsRepositoryImp
@@ -42,33 +41,35 @@ class DetailsRepositoryImpTest {
     }
 
     @Test
-    fun requestCharacterDetails_success() = runTest {
-        // Given
-        val characterId = 1
-        coEvery { apiService.fetchCharacterDetail(characterId) } returns mockCharacterResponse
+    fun requestCharacterDetails_success() =
+        runTest {
+            // Given
+            val characterId = 1
+            coEvery { apiService.fetchCharacterDetail(characterId) } returns mockCharacterResponse
 
-        // When
-        val result: Response<CharacterDto> = apiService.fetchCharacterDetail(characterId)
+            // When
+            val result: Response<CharacterDto> = apiService.fetchCharacterDetail(characterId)
 
-        // Then
-        result.isSuccessful shouldBe true
-        result.body() shouldBeEqualTo character1
-        result.body()!!.id shouldBeEqualTo characterId
-        result.body()!!.name shouldBeEqualTo "Rick Sanchez"
-    }
+            // Then
+            result.isSuccessful shouldBe true
+            result.body() shouldBeEqualTo character1
+            result.body()!!.id shouldBeEqualTo characterId
+            result.body()!!.name shouldBeEqualTo "Rick Sanchez"
+        }
 
     @Test
-    fun requestCharacterDetails_error() = runTest {
-        // Given
-        val characterId = 99
-        coEvery { apiService.fetchCharacterDetail(characterId ) } returns errorResponse
+    fun requestCharacterDetails_error() =
+        runTest {
+            // Given
+            val characterId = 99
+            coEvery { apiService.fetchCharacterDetail(characterId) } returns errorResponse
 
-        // When
-        val result: Response<CharacterDto> = apiService.fetchCharacterDetail(characterId)
+            // When
+            val result: Response<CharacterDto> = apiService.fetchCharacterDetail(characterId)
 
-        // Then
-        result.isSuccessful shouldBe false
-        result.code() shouldBeEqualTo 404
-        result.body() shouldBe null
-    }
+            // Then
+            result.isSuccessful shouldBe false
+            result.code() shouldBeEqualTo 404
+            result.body() shouldBe null
+        }
 }

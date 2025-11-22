@@ -51,7 +51,7 @@ fun CustomHomeTopAppBar(
     query: String,
     onQueryChange: (String) -> Unit,
     isSearchExpanded: Boolean,
-    onExpandedChange: (Boolean) -> Unit
+    onExpandedChange: (Boolean) -> Unit,
 ) {
     var textFieldWidth by remember { mutableFloatStateOf(0f) }
 
@@ -59,26 +59,33 @@ fun CustomHomeTopAppBar(
         title = {
             AnimatedVisibility(
                 visible = isSearchExpanded,
-                enter = expandHorizontally(animationSpec = tween(300)) + fadeIn(
-                    animationSpec = tween(
-                        300
-                    )
-                ),
-                exit = shrinkHorizontally(animationSpec = tween(300)) + fadeOut(
-                    animationSpec = tween(
-                        300
-                    )
-                ),
+                enter =
+                    expandHorizontally(animationSpec = tween(300)) +
+                        fadeIn(
+                            animationSpec =
+                                tween(
+                                    300,
+                                ),
+                        ),
+                exit =
+                    shrinkHorizontally(animationSpec = tween(300)) +
+                        fadeOut(
+                            animationSpec =
+                                tween(
+                                    300,
+                                ),
+                        ),
             ) {
                 SearchTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onGloballyPositioned { textFieldWidth = it.size.width.toFloat() },
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .onGloballyPositioned { textFieldWidth = it.size.width.toFloat() },
                     query = query,
                     onQueryChange = onQueryChange,
                     onExpandedChange = {
                         onExpandedChange(it)
-                    }
+                    },
                 )
             }
 
@@ -88,13 +95,14 @@ fun CustomHomeTopAppBar(
                 exit = fadeOut(animationSpec = tween(300)),
             ) {
                 CustomTopAppBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .width(with(LocalDensity.current) { textFieldWidth.toDp() }),
-                    onSearchTap = { onExpandedChange(true) }
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .width(with(LocalDensity.current) { textFieldWidth.toDp() }),
+                    onSearchTap = { onExpandedChange(true) },
                 )
             }
-        }
+        },
     )
 }
 
@@ -103,7 +111,7 @@ private fun SearchTextField(
     query: String,
     onQueryChange: (String) -> Unit,
     onExpandedChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -114,8 +122,9 @@ private fun SearchTextField(
     }
 
     TextField(
-        modifier = modifier
-            .focusRequester(focusRequester),
+        modifier =
+            modifier
+                .focusRequester(focusRequester),
         value = query,
         onValueChange = onQueryChange,
         placeholder = { Text(stringResource(R.string.search_characters)) },
@@ -132,38 +141,41 @@ private fun SearchTextField(
             }
         },
         singleLine = true,
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-            focusedContainerColor = MaterialTheme.colorScheme.surface,
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent
-        )
+        colors =
+            TextFieldDefaults.colors(
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+            ),
     )
 }
 
 @Composable
 private fun CustomTopAppBar(
     modifier: Modifier = Modifier,
-    onSearchTap: () -> Unit
+    onSearchTap: () -> Unit,
 ) {
     Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(56.dp),
         color = MaterialTheme.colorScheme.background,
-        contentColor = MaterialTheme.colorScheme.onBackground
+        contentColor = MaterialTheme.colorScheme.onBackground,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
 
             IconButton(onClick = onSearchTap) {

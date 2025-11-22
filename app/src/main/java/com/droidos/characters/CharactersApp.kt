@@ -6,7 +6,6 @@ import timber.log.Timber
 
 @HiltAndroidApp
 class CharactersApp : Application() {
-
     override fun onCreate() {
         super.onCreate()
         Timber.uprootAll()

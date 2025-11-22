@@ -5,7 +5,6 @@ import com.droidos.domain.repository.SearchCharacterRepository
 class GetSearchUseCase(
     private val searchCharacterRepository: SearchCharacterRepository,
 ) {
-
     /**
      * Executes the search character use case.
      *

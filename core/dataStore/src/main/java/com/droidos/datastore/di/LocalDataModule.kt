@@ -18,18 +18,16 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object LocalDataModule {
-
     @Singleton
     @Provides
-    fun provideLocalDataStore(@ApplicationContext app: Context): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create(
-            produceFile = { app.preferencesDataStoreFile(PREFERENCES_STORE_NAME) }
+    fun provideLocalDataStore(
+        @ApplicationContext app: Context,
+    ): DataStore<Preferences> =
+        PreferenceDataStoreFactory.create(
+            produceFile = { app.preferencesDataStoreFile(PREFERENCES_STORE_NAME) },
         )
-    }
 
     @Singleton
     @Provides
-    fun provideLocalDataSource(dataStore: DataStore<Preferences>): LocalDataStore {
-        return LocalDataStoreImp(dataStore)
-    }
+    fun provideLocalDataSource(dataStore: DataStore<Preferences>): LocalDataStore = LocalDataStoreImp(dataStore)
 }

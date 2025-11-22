@@ -21,13 +21,12 @@ import androidx.navigation.NavDestination
 import com.droidos.common.utils.Screen
 import com.droidos.design.R
 
-
 @Composable
 fun RMCTopBar(
     destination: NavDestination?,
     querySearch: String,
     onSearchClick: (String) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     // Keeps search open when returning from details screen,
     // Without this, search would close after navigation
@@ -41,30 +40,30 @@ fun RMCTopBar(
             isSearchExpanded = isSearchExpanded,
             onExpandedChange = {
                 isSearchExpanded = it
-            }
+            },
         )
     }
 
     @Composable
     fun DetailTopBar() {
         TopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                titleContentColor = MaterialTheme.colorScheme.onBackground,
-                navigationIconContentColor = MaterialTheme.colorScheme.onBackground
-            ),
+            colors =
+                TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
+                ),
             title = {
                 Text(text = stringResource(R.string.detail))
-
             },
             navigationIcon = {
                 IconButton(onBackClick) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back)
+                        contentDescription = stringResource(R.string.back),
                     )
                 }
-            }
+            },
         )
     }
 

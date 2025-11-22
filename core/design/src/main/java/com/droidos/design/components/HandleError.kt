@@ -12,23 +12,25 @@ import com.droidos.network.di.errorHandler.entities.ErrorEntity
 fun HandleError(
     snackBarHostState: SnackbarHostState,
     error: ErrorEntity?,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     error?.let {
         when (it) {
             ErrorEntity.Network,
-            ErrorEntity.Timeout -> {
+            ErrorEntity.Timeout,
+            -> {
                 LaunchedEffect(it) {
                     snackBarHostState.showSnackbar(
                         message = "Check your internet connection",
-                        withDismissAction = true
+                        withDismissAction = true,
                     )
                     onDismiss()
                 }
             }
 
             ErrorEntity.Unauthorized,
-            ErrorEntity.AccessDenied -> {
+            ErrorEntity.AccessDenied,
+            -> {
                 DialogWrapper("You are not authorized to access this content.", onDismiss)
             }
 
@@ -40,7 +42,7 @@ fun HandleError(
                 LaunchedEffect(it) {
                     snackBarHostState.showSnackbar(
                         message = "The content you are looking for was not found.",
-                        withDismissAction = true
+                        withDismissAction = true,
                     )
                     onDismiss()
                 }
@@ -48,7 +50,8 @@ fun HandleError(
 
             ErrorEntity.ServiceUnavailable,
             ErrorEntity.ServerInternalError,
-            ErrorEntity.GatewayError -> {
+            ErrorEntity.GatewayError,
+            -> {
                 DialogWrapper("Server is currently unavailable. Please try again later.", onDismiss)
             }
 
@@ -64,7 +67,10 @@ fun HandleError(
 }
 
 @Composable
-fun DialogWrapper(message: String, onDismiss: () -> Unit) {
+fun DialogWrapper(
+    message: String,
+    onDismiss: () -> Unit,
+) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Error") },
@@ -73,7 +79,6 @@ fun DialogWrapper(message: String, onDismiss: () -> Unit) {
             TextButton(onClick = onDismiss) {
                 Text("OK")
             }
-        }
+        },
     )
 }
-

@@ -23,12 +23,14 @@ fun LoadingImage(
 ) {
     AsyncImage(
         modifier = modifier,
-        model = ImageRequest.Builder(context = LocalContext.current)
-            .data(url)
-            .crossfade(true)
-            .placeholder(R.drawable.loading)
-            .build(),
+        model =
+            ImageRequest
+                .Builder(context = LocalContext.current)
+                .data(url)
+                .crossfade(true)
+                .placeholder(R.drawable.loading)
+                .build(),
         contentDescription = description,
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.Crop,
     )
 }

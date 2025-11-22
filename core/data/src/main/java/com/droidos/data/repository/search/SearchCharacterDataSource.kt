@@ -9,10 +9,8 @@ import retrofit2.HttpException
 
 class SearchCharacterDataSource(
     private val apiService: CharactersService,
-    private val name: String
+    private val name: String,
 ) : PagingSource<Int, CharacterDto>() {
-
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterDto> {
         val page = params.key ?: INITIAL_PAGE
 
@@ -25,16 +23,15 @@ class SearchCharacterDataSource(
                     prevKey = if (page == INITIAL_PAGE) null else page - 1,
                     nextKey = null,
                     itemsBefore = if (page == INITIAL_PAGE) 0 else Int.MIN_VALUE,
-                    itemsAfter = if (page == INITIAL_PAGE) 0 else Int.MIN_VALUE
+                    itemsAfter = if (page == INITIAL_PAGE) 0 else Int.MIN_VALUE,
                 )
             }
 
             LoadResult.Page(
                 data = response.results,
                 prevKey = if (page == INITIAL_PAGE) null else page - 1,
-                nextKey = if (response.info.next == null) null else page + 1
+                nextKey = if (response.info.next == null) null else page + 1,
             )
-
         } catch (e: Throwable) {
             when (e) {
                 is HttpException -> {
@@ -45,7 +42,7 @@ class SearchCharacterDataSource(
                                 prevKey = if (page == INITIAL_PAGE) null else page - 1,
                                 nextKey = null,
                                 itemsBefore = if (page == INITIAL_PAGE) 0 else Int.MIN_VALUE,
-                                itemsAfter = if (page == INITIAL_PAGE) 0 else Int.MIN_VALUE
+                                itemsAfter = if (page == INITIAL_PAGE) 0 else Int.MIN_VALUE,
                             )
                         }
                         else -> LoadResult.Error(e)
@@ -56,10 +53,9 @@ class SearchCharacterDataSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, CharacterDto>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
+    override fun getRefreshKey(state: PagingState<Int, CharacterDto>): Int? =
+        state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
-    }
 }

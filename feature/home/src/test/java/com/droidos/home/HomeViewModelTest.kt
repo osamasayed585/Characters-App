@@ -19,9 +19,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-
 class HomeViewModelTest {
-
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -29,13 +27,13 @@ class HomeViewModelTest {
     private lateinit var useCases: CharactersUseCases
     private lateinit var sut: HomeViewModel
 
-
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        coEvery { useCases.getCharactersUseCase() } returns flowOf(
-            PagingData.from(dummySuccess_HomeState)
-        )
+        coEvery { useCases.getCharactersUseCase() } returns
+            flowOf(
+                PagingData.from(dummySuccess_HomeState),
+            )
         sut = HomeViewModel(useCases)
     }
 
@@ -44,19 +42,19 @@ class HomeViewModelTest {
         clearAllMocks()
     }
 
-
     @Test
-    fun `getCharacters with non blank query`() = runTest {
-        // Test if getCharacters returns search results when the query is not blank.
-        val query = "Rick Sanchez"
-        coEvery { useCases.getSearchUseCase(query) } returns flowOf(PagingData.from(testCharacters))
-        sut.emitAction(HomeActions.OnQueryChange(query))
+    fun `getCharacters with non blank query`() =
+        runTest {
+            // Test if getCharacters returns search results when the query is not blank.
+            val query = "Rick Sanchez"
+            coEvery { useCases.getSearchUseCase(query) } returns flowOf(PagingData.from(testCharacters))
+            sut.emitAction(HomeActions.OnQueryChange(query))
 
-        sut.characters.test {
-            val result = awaitItem().collectData()
-            Assert.assertTrue(result.isEmpty())
+            sut.characters.test {
+                val result = awaitItem().collectData()
+                Assert.assertTrue(result.isEmpty())
+            }
         }
-    }
 
     @Test
     fun `getCharacters debounce functionality`() {
@@ -161,16 +159,19 @@ class HomeViewModelTest {
     }
 }
 
-
-private fun <T : Any> PagingData<T>.collectData(): List<T> = runBlocking {
-    val items = mutableListOf<T>()
-    flowOf(this@collectData).collect { pagingData ->
-        pagingData.map { item ->
-            items.add(item)
-            println("this is a new item $item")
+private fun <T : Any> PagingData<T>.collectData(): List<T> =
+    runBlocking {
+        val items = mutableListOf<T>()
+        flowOf(this@collectData).collect { pagingData ->
+            pagingData.map { item ->
+                items.add(item)
+                println("this is a new item $item")
+            }
         }
+        if (items.isEmpty()) {
+            println("there's no items")
+        } else {
+            println("Here's our items")
+        }
+        items
     }
-    if (items.isEmpty()) println("there's no items")
-    else println("Here's our items")
-    items
-}

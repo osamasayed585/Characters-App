@@ -23,12 +23,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
     private const val READ_TIMEOUT = 30
     private const val WRITE_TIMEOUT = 30
     private const val CONNECTION_TIMEOUT = 10
     private const val CACHE_SIZE_BYTES = 10 * 1024 * 1024L // 10 MB
-
 
     @Provides
     @Singleton
@@ -40,9 +38,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideCacheInterceptor(preferences: LocalDataStore): CacheInterceptor {
-        return CacheInterceptor(preferences)
-    }
+    internal fun provideCacheInterceptor(preferences: LocalDataStore): CacheInterceptor = CacheInterceptor(preferences)
 
     @Provides
     @Singleton
@@ -50,7 +46,9 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideCache(@ApplicationContext context: Context): Cache {
+    internal fun provideCache(
+        @ApplicationContext context: Context,
+    ): Cache {
         val httpCacheDirectory = File(context.cacheDir.absolutePath, "HttpCache")
         return Cache(httpCacheDirectory, CACHE_SIZE_BYTES)
     }
@@ -61,25 +59,25 @@ object NetworkModule {
         httpLoggingInterceptor: HttpLoggingInterceptor,
         cacheInterceptor: CacheInterceptor,
         cache: Cache,
-    ): OkHttpClient {
-        return OkHttpClient.Builder().apply {
-            cache(cache)
-            connectTimeout(CONNECTION_TIMEOUT.toLong(), TimeUnit.SECONDS)
-            readTimeout(READ_TIMEOUT.toLong(), TimeUnit.SECONDS)
-            writeTimeout(WRITE_TIMEOUT.toLong(), TimeUnit.SECONDS)
-            addNetworkInterceptor(cacheInterceptor)
-            addInterceptor(httpLoggingInterceptor)
-        }.build()
-    }
+    ): OkHttpClient =
+        OkHttpClient
+            .Builder()
+            .apply {
+                cache(cache)
+                connectTimeout(CONNECTION_TIMEOUT.toLong(), TimeUnit.SECONDS)
+                readTimeout(READ_TIMEOUT.toLong(), TimeUnit.SECONDS)
+                writeTimeout(WRITE_TIMEOUT.toLong(), TimeUnit.SECONDS)
+                addNetworkInterceptor(cacheInterceptor)
+                addInterceptor(httpLoggingInterceptor)
+            }.build()
 
     @Provides
     @Singleton
-    internal fun provideRetrofit(client: OkHttpClient, ): Retrofit {
-        return Retrofit.Builder()
+    internal fun provideRetrofit(client: OkHttpClient): Retrofit =
+        Retrofit
+            .Builder()
             .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
 }

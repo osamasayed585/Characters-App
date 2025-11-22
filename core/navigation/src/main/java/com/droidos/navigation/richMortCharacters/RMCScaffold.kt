@@ -17,17 +17,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.droidos.common.R
-import com.droidos.navigation.util.networkMonitor.NetworkMonitor
 import com.droidos.design.components.RMCTopBar
+import com.droidos.navigation.util.networkMonitor.NetworkMonitor
 
 @Composable
 fun RMCScaffold(
     networkMonitor: NetworkMonitor,
     navController: NavHostController,
-    appState: RMCState = rememberRmcState(
-        networkMonitor = networkMonitor,
-        navController = navController
-    ),
+    appState: RMCState =
+        rememberRmcState(
+            networkMonitor = networkMonitor,
+            navController = navController,
+        ),
 ) {
     val notConnectedMessage = stringResource(R.string.not_connected)
     val snackbarHostState = remember { SnackbarHostState() }
@@ -51,16 +52,15 @@ fun RMCScaffold(
                 destination = appState.currentDestination,
                 querySearch = querySearch,
                 onSearchClick = { querySearch = it },
-                onBackClick = navController::popBackStack
+                onBackClick = navController::popBackStack,
             )
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) { innerPadding ->
         Column(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
         ) {
             RMCNavHost(navController, snackbarHostState, querySearch)
         }
     }
-
 }

@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-
 /**
  * Base class for ViewModels that handles state management using StateFlow.
  *
@@ -13,12 +12,12 @@ import kotlinx.coroutines.flow.update
  * @param E The type of the screen event.
  * @property initialVal The initial value of the screen state.
  */
-abstract class BaseViewModel<T : ScreenState, in E : ScreenAction>(initialVal: T) : ViewModel() {
-
+abstract class BaseViewModel<T : ScreenState, in E : ScreenAction>(
+    initialVal: T,
+) : ViewModel() {
     private var _uiState = MutableStateFlow(initialVal)
     val state: T get() = _uiState.value
     val uiState: StateFlow<T> get() = _uiState
-
 
     fun emitAction(event: E) {
         processAction(_uiState.value, event)
@@ -32,8 +31,12 @@ abstract class BaseViewModel<T : ScreenState, in E : ScreenAction>(initialVal: T
         _uiState.update { currentState -> currentState.update() }
     }
 
-    abstract fun processAction(oldState: T, action: E)
+    abstract fun processAction(
+        oldState: T,
+        action: E,
+    )
 }
 
 interface ScreenState
+
 interface ScreenAction

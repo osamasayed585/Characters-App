@@ -3,12 +3,11 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 
 class MockTestData {
-
     companion object {
         private val jsonMediaType = "application/json".toMediaType()
 
-        fun getErrorResponses(): Map<Int, Response<Any>> {
-            return mapOf(
+        fun getErrorResponses(): Map<Int, Response<Any>> =
+            mapOf(
                 400 to createErrorResponse(400, "Bad Request"),
                 401 to createErrorResponse(401, "Unauthorized"),
                 403 to createErrorResponse(403, "Forbidden"),
@@ -18,13 +17,13 @@ class MockTestData {
                 502 to createErrorResponse(502, "Bad Gateway"),
                 503 to createErrorResponse(503, "Service Unavailable"),
                 504 to createErrorResponse(504, "Gateway Timeout"),
-                520 to createErrorResponse(520, "Unknown Error")
+                520 to createErrorResponse(520, "Unknown Error"),
             )
-        }
 
-        private fun createErrorResponse(code: Int, message: String): Response<Any> {
-            return Response.error(code, message.toResponseBody(jsonMediaType))
-        }
+        private fun createErrorResponse(
+            code: Int,
+            message: String,
+        ): Response<Any> = Response.error(code, message.toResponseBody(jsonMediaType))
     }
 
     val nullErrorResponse: Response<Any> = Response.error(520, null)

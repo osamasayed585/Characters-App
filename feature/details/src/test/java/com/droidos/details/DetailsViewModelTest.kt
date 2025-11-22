@@ -2,7 +2,6 @@
 
 package com.droidos.details
 
-
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.droidos.common.utils.Constants
@@ -25,7 +24,6 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class DetailsViewModelTest {
-
     private lateinit var sut: DetailsViewModel
 
     @MockK
@@ -43,11 +41,12 @@ class DetailsViewModelTest {
     private fun produceViewModel(id: Int = 1) {
         val dispatcherProvider = TestDispatcherProvider()
         every { savedStateHandle.get<Int>(Constants.ID) } returns id
-        sut = DetailsViewModel(
-            getCharacterDetailsUseCase = getCharacterDetailsUseCase,
-            dispatcher = dispatcherProvider,
-            savedStateHandle = savedStateHandle
-        )
+        sut =
+            DetailsViewModel(
+                getCharacterDetailsUseCase = getCharacterDetailsUseCase,
+                dispatcher = dispatcherProvider,
+                savedStateHandle = savedStateHandle,
+            )
     }
 
     @After
@@ -56,90 +55,92 @@ class DetailsViewModelTest {
     }
 
     @Test
-    fun `reduce with OnGetCharacterDetails updates all character fields`() = runTest {
-        // Verify that when DetailsEvent.OnGetCharacterDetails is processed, all fields of the character (id, name, image, status, species)
-        // in the UI state are correctly updated from the provided CharacterUIModel.
+    fun `reduce with OnGetCharacterDetails updates all character fields`() =
+        runTest {
+            // Verify that when DetailsEvent.OnGetCharacterDetails is processed, all fields of the character (id, name, image, status, species)
+            // in the UI state are correctly updated from the provided CharacterUIModel.
 
-        val character = createMockCharacter()
-        sut.emitAction(DetailsAction.OnGetCharacterDetails(character))
+            val character = createMockCharacter()
+            sut.emitAction(DetailsAction.OnGetCharacterDetails(character))
 
-        sut.uiState.test {
-            val result = awaitItem()
-            assertEquals(character.id, result.id)
+            sut.uiState.test {
+                val result = awaitItem()
+                assertEquals(character.id, result.id)
+            }
         }
-
-    }
 
     @Test
-    fun `reduce with OnGetError updates apiState and errorEntity`() = runTest{
-        // Verify that when DetailsEvent.OnGetError is processed, the apiState is set to DetailApiState.Error with the correct error type,
-        // and the errorEntity in the UI state is updated with the provided error type.
-        val errorMessage = "Error message"
-        val errorType = ErrorEntity.Unknown(errorMessage)
-        sut.emitAction(DetailsAction.OnGetError(errorType))
+    fun `reduce with OnGetError updates apiState and errorEntity`() =
+        runTest {
+            // Verify that when DetailsEvent.OnGetError is processed, the apiState is set to DetailApiState.Error with the correct error type,
+            // and the errorEntity in the UI state is updated with the provided error type.
+            val errorMessage = "Error message"
+            val errorType = ErrorEntity.Unknown(errorMessage)
+            sut.emitAction(DetailsAction.OnGetError(errorType))
 
-        sut.uiState.test {
-            val result = awaitItem()
-            assertEquals(DetailsUiState.DetailApiState.Error(errorType), result.apiState)
+            sut.uiState.test {
+                val result = awaitItem()
+                assertEquals(DetailsUiState.DetailApiState.Error(errorType), result.apiState)
+            }
         }
-    }
 
     @Test
-    fun `reduce with OnGetError preserves character data`() = runTest {
-        // Verify that when DetailsEvent.OnGetError is processed, existing character data (id, name, image, status, species)
-        // in the UI state remains unchanged.
-        produceViewModel(-1)
-        sut.emitAction(DetailsAction.OnGetError(ErrorEntity.Unknown("Error Message")))
+    fun `reduce with OnGetError preserves character data`() =
+        runTest {
+            // Verify that when DetailsEvent.OnGetError is processed, existing character data (id, name, image, status, species)
+            // in the UI state remains unchanged.
+            produceViewModel(-1)
+            sut.emitAction(DetailsAction.OnGetError(ErrorEntity.Unknown("Error Message")))
 
-        sut.uiState.test {
-            val result = awaitItem()
-            assertEquals(errorDetailsUiState, result)
+            sut.uiState.test {
+                val result = awaitItem()
+                assertEquals(errorDetailsUiState, result)
+            }
         }
-    }
 
     @Test
-    fun `reduce with ClearError only clears errorEntity`() = runTest{
-        // Verify that when DetailsEvent.ClearError is processed, only the errorEntity is set to null,
-        // and all other fields in the UI state (including apiState and character data) remain unchanged.
+    fun `reduce with ClearError only clears errorEntity`() =
+        runTest {
+            // Verify that when DetailsEvent.ClearError is processed, only the errorEntity is set to null,
+            // and all other fields in the UI state (including apiState and character data) remain unchanged.
 
-        sut.emitAction(DetailsAction.ClearError)
+            sut.emitAction(DetailsAction.ClearError)
 
-        sut.uiState.test {
-            val result = awaitItem()
-            assertNull(result.errorEntity)
+            sut.uiState.test {
+                val result = awaitItem()
+                assertNull(result.errorEntity)
+            }
         }
-
-    }
 
     @Test
-    fun `fetchCharacterDetails with invalid ID like -1 or 0 negative zero `() = runTest{
-        // Test how fetchCharacterDetails handles an invalid character ID (e.g., -1, 0) passed as an argument.
-        // Expect it to potentially result in an error state from the use case.
-        produceViewModel(-1)
-        sut.emitAction(DetailsAction.OnGetError(ErrorEntity.Unknown("Error Message")))
+    fun `fetchCharacterDetails with invalid ID like -1 or 0 negative zero `() =
+        runTest {
+            // Test how fetchCharacterDetails handles an invalid character ID (e.g., -1, 0) passed as an argument.
+            // Expect it to potentially result in an error state from the use case.
+            produceViewModel(-1)
+            sut.emitAction(DetailsAction.OnGetError(ErrorEntity.Unknown("Error Message")))
 
-        sut.uiState.test {
-            val result = awaitItem()
-            assertEquals(errorDetailsUiState, result)
+            sut.uiState.test {
+                val result = awaitItem()
+                assertEquals(errorDetailsUiState, result)
+            }
         }
-    }
 
     @Test
-    fun `fetchCharacterDetails when use case returns success with null character data fields`() = runTest {
-        // Test the behavior when getCharacterDetailsUseCase successfully returns a CharacterUIModel, but some of its fields (e.g., name, image) are null or empty.
-        // Ensure the UI state reflects these null/empty values correctly without crashing.
+    fun `fetchCharacterDetails when use case returns success with null character data fields`() =
+        runTest {
+            // Test the behavior when getCharacterDetailsUseCase successfully returns a CharacterUIModel, but some of its fields (e.g., name, image) are null or empty.
+            // Ensure the UI state reflects these null/empty values correctly without crashing.
 
-        val character = createMockCharacter(name = "", image = "")
-        coEvery { getCharacterDetailsUseCase(any()) } returns Result.success(character)
+            val character = createMockCharacter(name = "", image = "")
+            coEvery { getCharacterDetailsUseCase(any()) } returns Result.success(character)
 
-        sut.fetchCharacterDetails(1)
+            sut.fetchCharacterDetails(1)
 
-        sut.uiState.test {
-            val result = awaitItem()
-            assertEquals("", result.name)
-            assertEquals("", result.image)
+            sut.uiState.test {
+                val result = awaitItem()
+                assertEquals("", result.name)
+                assertEquals("", result.image)
+            }
         }
-    }
-
 }
-

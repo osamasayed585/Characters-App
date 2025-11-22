@@ -24,30 +24,37 @@ import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val charactersUseCases: CharactersUseCases,
-) : BaseViewModel<HomeUiState, HomeActions>(HomeUiState()) {
+class HomeViewModel
+    @Inject
+    constructor(
+        private val charactersUseCases: CharactersUseCases,
+    ) : BaseViewModel<HomeUiState, HomeActions>(HomeUiState()) {
+        val characters: StateFlow<PagingData<CharacterUIModel>> =
+            uiState
+                .map { it.searchQuery }
+                .debounce(500)
+                .distinctUntilChanged()
+                .flatMapLatest { query ->
+                    if (query.isBlank()) {
+                        charactersUseCases.getCharactersUseCase()
+                    } else {
+                        charactersUseCases.getSearchUseCase(query)
+                    }
+                }.cachedIn(viewModelScope)
+                .stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.WhileSubscribed(5000),
+                    initialValue = PagingData.empty(),
+                )
 
-    val characters: StateFlow<PagingData<CharacterUIModel>> = uiState
-        .map { it.searchQuery }
-        .debounce(500)
-        .distinctUntilChanged()
-        .flatMapLatest { query ->
-            if (query.isBlank()) charactersUseCases.getCharactersUseCase()
-            else charactersUseCases.getSearchUseCase(query)
-        }
-        .cachedIn(viewModelScope)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = PagingData.empty()
-        )
-
-    override fun processAction(oldState: HomeUiState, action: HomeActions) {
-        when (action) {
-            is HomeActions.OnQueryChange -> {
-                updateState { copy(searchQuery = action.query) }
+        override fun processAction(
+            oldState: HomeUiState,
+            action: HomeActions,
+        ) {
+            when (action) {
+                is HomeActions.OnQueryChange -> {
+                    updateState { copy(searchQuery = action.query) }
+                }
             }
         }
     }
-}

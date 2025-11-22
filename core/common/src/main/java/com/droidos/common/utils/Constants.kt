@@ -1,7 +1,6 @@
 package com.droidos.common.utils
 
 object Constants {
-
     const val BASE_URL = "https://rickandmortyapi.com/api/"
     const val PREFERENCES_STORE_NAME = "yassirDataStore"
     const val INITIAL_PAGE = 1

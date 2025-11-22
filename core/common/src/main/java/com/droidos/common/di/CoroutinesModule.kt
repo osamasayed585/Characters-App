@@ -9,7 +9,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object CoroutinesModule {
-
     @Provides
     @Singleton
     fun provideDispatcher(): DispatcherProvider = DefaultDispatcherProvider()

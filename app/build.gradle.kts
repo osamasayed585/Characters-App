@@ -1,20 +1,36 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.devtools.ksp)
 }
 
 android {
     namespace = libs.versions.appNamesPace.get()
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
         applicationId = libs.versions.applicationId.get()
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = libs.versions.versionCode.get().toInt()
+        minSdk =
+            libs.versions.minSdk
+                .get()
+                .toInt()
+        targetSdk =
+            libs.versions.targetSdk
+                .get()
+                .toInt()
+        versionCode =
+            libs.versions.versionCode
+                .get()
+                .toInt()
         versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -28,7 +44,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -36,8 +52,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
     buildFeatures {
         compose = true
@@ -54,7 +72,16 @@ android {
         abortOnError = false
         disable += "StateFlowValueCalledInComposition"
         warningsAsErrors = true
-        checkDependencies  = true
+        checkDependencies = true
+    }
+
+    ktlint {
+        android = true
+
+        reporters {
+            reporter(ReporterType.CHECKSTYLE)
+            reporter(ReporterType.HTML)
+        }
     }
 }
 
@@ -70,7 +97,6 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-
 
     // compose
     implementation(platform(libs.androidx.compose.bom))
@@ -103,6 +129,6 @@ dependencies {
     // timber
     implementation(libs.timber)
 
-    /// shimmer
+    // shimmer
     implementation(libs.compose.shimmer)
 }

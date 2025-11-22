@@ -1,11 +1,10 @@
 package com.droidos.data.di
 
-
 import com.droidos.common.di.DispatcherProvider
 import com.droidos.data.remote.CharactersService
 import com.droidos.data.repository.characters.GetCharactersRepositoryImp
-import com.droidos.data.repository.search.SearchCharacterImp
 import com.droidos.data.repository.details.DetailsRepositoryImp
+import com.droidos.data.repository.search.SearchCharacterImp
 import com.droidos.datastore.LocalDataStore
 import com.droidos.domain.repository.CharacterDetailsRepository
 import com.droidos.domain.repository.GetCharactersRepository
@@ -20,22 +19,20 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
-
     @Provides
     @Singleton
     fun provideSearchCharacterRepository(
         charactersService: CharactersService,
         preferences: LocalDataStore,
         dispatcherProvider: DispatcherProvider,
-        errorHandler: ErrorHandler
-    ): SearchCharacterRepository {
-        return SearchCharacterImp(
+        errorHandler: ErrorHandler,
+    ): SearchCharacterRepository =
+        SearchCharacterImp(
             apiService = charactersService,
             preferences = preferences,
             dispatcherProvider = dispatcherProvider,
-            errorHandler = errorHandler
+            errorHandler = errorHandler,
         )
-    }
 
     @Provides
     @Singleton
@@ -43,15 +40,14 @@ object RepositoryModule {
         charactersService: CharactersService,
         preferences: LocalDataStore,
         dispatcherProvider: DispatcherProvider,
-        errorHandler: ErrorHandler
-    ): GetCharactersRepository {
-        return GetCharactersRepositoryImp(
+        errorHandler: ErrorHandler,
+    ): GetCharactersRepository =
+        GetCharactersRepositoryImp(
             apiService = charactersService,
             preferences = preferences,
             dispatcherProvider = dispatcherProvider,
-            errorHandler = errorHandler
+            errorHandler = errorHandler,
         )
-    }
 
     @Provides
     @Singleton
@@ -59,14 +55,12 @@ object RepositoryModule {
         charactersService: CharactersService,
         preferences: LocalDataStore,
         dispatcherProvider: DispatcherProvider,
-        errorHandler: ErrorHandler
-    ): CharacterDetailsRepository {
-        return DetailsRepositoryImp(
+        errorHandler: ErrorHandler,
+    ): CharacterDetailsRepository =
+        DetailsRepositoryImp(
             apiService = charactersService,
             preferences = preferences,
             dispatcherProvider = dispatcherProvider,
-            errorHandler = errorHandler
+            errorHandler = errorHandler,
         )
-    }
-
 }

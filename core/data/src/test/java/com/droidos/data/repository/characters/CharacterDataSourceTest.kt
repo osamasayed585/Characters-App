@@ -23,7 +23,6 @@ import org.junit.Rule
 import org.junit.Test
 
 class CharacterDataSourceTest {
-
     @get:Rule(order = 0)
     val mockkRule = MockKRule(this)
     private lateinit var sut: CharacterDataSource
@@ -42,47 +41,50 @@ class CharacterDataSourceTest {
     }
 
     @Test
-    fun load() = runTest {
-        // Given
-        coEvery { apiService.fetchCharacters() } returns mockResponse
-        val params = PagingSource.LoadParams.Refresh(1, 10, false)
+    fun load() =
+        runTest {
+            // Given
+            coEvery { apiService.fetchCharacters() } returns mockResponse
+            val params = PagingSource.LoadParams.Refresh(1, 10, false)
 
-        // When
-        val result = sut.load(params)
+            // When
+            val result = sut.load(params)
 
-        // Than
-        result shouldBeInstanceOf PagingSource.LoadResult.Page::class
-        val pageResult = result as PagingSource.LoadResult.Page
-        pageResult.data.shouldNotBeEmpty()
-        pageResult.data shouldHaveSize 2
-        pageResult.nextKey shouldBeEqualTo 2
-        pageResult.prevKey shouldBeEqualTo null
-    }
+            // Than
+            result shouldBeInstanceOf PagingSource.LoadResult.Page::class
+            val pageResult = result as PagingSource.LoadResult.Page
+            pageResult.data.shouldNotBeEmpty()
+            pageResult.data shouldHaveSize 2
+            pageResult.nextKey shouldBeEqualTo 2
+            pageResult.prevKey shouldBeEqualTo null
+        }
 
     @Test
     fun getRefreshKey() {
         // Given
-        val mockPages = listOf(
-            PagingSource.LoadResult.Page(
-                data = charactersResponse,
-                prevKey = 1,
-                nextKey = 3,
-                itemsBefore = 0,
-                itemsAfter = 0
+        val mockPages =
+            listOf(
+                PagingSource.LoadResult.Page(
+                    data = charactersResponse,
+                    prevKey = 1,
+                    nextKey = 3,
+                    itemsBefore = 0,
+                    itemsAfter = 0,
+                ),
             )
-        )
 
-        val pagingState = PagingState(
-            pages = mockPages,
-            anchorPosition = 15,
-            config = PagingConfig(pageSize = 20),
-            leadingPlaceholderCount = 0
-        )
+        val pagingState =
+            PagingState(
+                pages = mockPages,
+                anchorPosition = 15,
+                config = PagingConfig(pageSize = 20),
+                leadingPlaceholderCount = 0,
+            )
 
         // When
         val refreshKey = sut.getRefreshKey(pagingState)
 
         // Then
-        refreshKey shouldBeEqualTo  2
+        refreshKey shouldBeEqualTo 2
     }
 }

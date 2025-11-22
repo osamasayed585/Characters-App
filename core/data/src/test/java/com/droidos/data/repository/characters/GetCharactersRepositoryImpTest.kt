@@ -20,7 +20,6 @@ import org.junit.Rule
 import org.junit.Test
 
 class GetCharactersRepositoryImpTest {
-
     @get:Rule(order = 0)
     val mockkRule = MockKRule(this)
     private lateinit var sut: GetCharactersRepositoryImp
@@ -39,18 +38,17 @@ class GetCharactersRepositoryImpTest {
         clearAllMocks()
     }
 
-
-    @Ignore(" Caused by -> java.lang.RuntimeException: Method isLoggable in android.util.Log not mocked. See https://developer.android.com/r/studio-ui/build/not-mocked for details.")
+    @Ignore(
+        " Caused by -> java.lang.RuntimeException: Method isLoggable in android.util.Log not mocked. See https://developer.android.com/r/studio-ui/build/not-mocked for details.",
+    )
     @Test
     fun `Given a query, When fetchCharacters is called, Then it should return a flow of PagingData`() =
         runTest {
             coEvery { apiService.fetchCharacters() } returns mockResponse
-
 
             val result = sut.fetchCharacters()
             result.test {
                 awaitItem() shouldBeEqualTo mockCharactersResponse
             }
         }
-
 }

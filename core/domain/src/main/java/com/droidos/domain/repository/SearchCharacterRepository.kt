@@ -5,7 +5,6 @@ import com.droidos.model.beans.CharacterUIModel
 import kotlinx.coroutines.flow.Flow
 
 interface SearchCharacterRepository {
-
     /**
      * Searches for a character by name.
      *

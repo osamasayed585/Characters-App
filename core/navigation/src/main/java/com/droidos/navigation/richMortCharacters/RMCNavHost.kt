@@ -13,11 +13,11 @@ import com.droidos.home.navigation.charactersScreen
 fun RMCNavHost(
     navController: NavHostController,
     snackbarHostState: SnackbarHostState,
-    querySearch: String
+    querySearch: String,
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.HomeScreen.route
+        startDestination = Screen.HomeScreen.route,
     ) {
         charactersScreen(navController::navigateToCharacterDetails, querySearch)
 

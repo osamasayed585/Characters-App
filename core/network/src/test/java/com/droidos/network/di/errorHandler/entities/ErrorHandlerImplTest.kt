@@ -7,9 +7,7 @@ import org.junit.Test
 import retrofit2.HttpException
 import java.io.IOException
 
-
 class ErrorHandlerImplTest {
-
     private val errorHandler: ErrorHandler = ErrorHandlerImpl()
 
     @Test
@@ -40,7 +38,7 @@ class ErrorHandlerImplTest {
             500 to ErrorEntity.ServerInternalError,
             502 to ErrorEntity.GatewayError,
             503 to ErrorEntity.ServiceUnavailable,
-            504 to ErrorEntity.Timeout
+            504 to ErrorEntity.Timeout,
         ).forEach { (code, expected) ->
             val response = MockTestData.getErrorResponses().getValue(code)
             val exception = HttpException(response)

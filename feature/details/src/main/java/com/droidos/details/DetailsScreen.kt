@@ -45,7 +45,6 @@ import com.droidos.details.actions.DetailsAction
 import com.droidos.details.state.DetailsUiState
 import com.droidos.network.di.errorHandler.entities.ErrorEntity
 
-
 @Composable
 fun CharacterDetailsRoute(snackbarHostState: SnackbarHostState) {
     val viewModel: DetailsViewModel = hiltViewModel()
@@ -54,20 +53,22 @@ fun CharacterDetailsRoute(snackbarHostState: SnackbarHostState) {
     HandleError(
         snackBarHostState = snackbarHostState,
         error = uiState.errorEntity,
-        onDismiss = { viewModel.emitAction(DetailsAction.ClearError) }
+        onDismiss = { viewModel.emitAction(DetailsAction.ClearError) },
     )
 
     CharacterDetails(
         uiState = uiState,
         onRetry = {
             viewModel.fetchCharacterDetails(uiState.id)
-        }
+        },
     )
-
 }
 
 @Composable
-fun CharacterDetails(uiState: DetailsUiState, onRetry: () -> Unit) {
+fun CharacterDetails(
+    uiState: DetailsUiState,
+    onRetry: () -> Unit,
+) {
     when (uiState.apiState) {
         is DetailsUiState.DetailApiState.Error -> ErrorCard { onRetry() }
         is DetailsUiState.DetailApiState.Loading -> FullScreenLoading()
@@ -78,72 +79,80 @@ fun CharacterDetails(uiState: DetailsUiState, onRetry: () -> Unit) {
 }
 
 @Composable
-fun CharacterDetailsContent(uiState: DetailsUiState, modifier: Modifier = Modifier) {
+fun CharacterDetailsContent(
+    uiState: DetailsUiState,
+    modifier: Modifier = Modifier,
+) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .background(randomColor()),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .background(randomColor()),
         )
 
         AsyncImage(
             model = uiState.image,
             contentDescription = "${uiState.name}'s image",
-            modifier = Modifier
-                .offset(y = (-80).dp)
-                .size(160.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surface)
-                .border(4.dp, MaterialTheme.colorScheme.outline, CircleShape),
-            contentScale = ContentScale.Crop
+            modifier =
+                Modifier
+                    .offset(y = (-80).dp)
+                    .size(160.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surface)
+                    .border(4.dp, MaterialTheme.colorScheme.outline, CircleShape),
+            contentScale = ContentScale.Crop,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .offset(y = (-80).dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .offset(y = (-80).dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
                 text = uiState.name,
                 style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
             )
 
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     DetailRow(
                         label = stringResource(R.string.species),
-                        value = uiState.species
+                        value = uiState.species,
                     )
                     HorizontalDivider(modifier = Modifier.padding(vertical = 2.dp))
                     DetailRow(
                         label = stringResource(R.string.status),
-                        value = uiState.status
+                        value = uiState.status,
                     )
                 }
             }
@@ -153,28 +162,29 @@ fun CharacterDetailsContent(uiState: DetailsUiState, modifier: Modifier = Modifi
 
 @Preview(
     name = "Character Details - Success (Light)",
-    showBackground = true
+    showBackground = true,
 )
 @Preview(
     name = "Character Details - Success (Dark)",
     showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
 )
 @Composable
 fun PreviewCharacterDetailsSuccess() {
     RMCTheme {
-        val sampleCharacter = DetailsUiState(
-            id = 1,
-            name = "Rick Sanchez",
-            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-            species = "Human",
-            status = "Alive",
-            apiState = DetailsUiState.DetailApiState.Success
-        )
+        val sampleCharacter =
+            DetailsUiState(
+                id = 1,
+                name = "Rick Sanchez",
+                image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                species = "Human",
+                status = "Alive",
+                apiState = DetailsUiState.DetailApiState.Success,
+            )
 
         CharacterDetails(
             uiState = sampleCharacter,
-            onRetry = {}
+            onRetry = {},
         )
     }
 }
@@ -193,7 +203,7 @@ fun PreviewCharacterDetailsLoading() {
     RMCTheme {
         CharacterDetails(
             uiState = DetailsUiState(apiState = DetailsUiState.DetailApiState.Loading),
-            onRetry = {}
+            onRetry = {},
         )
     }
 }
@@ -211,12 +221,14 @@ fun PreviewCharacterDetailsLoading() {
 fun PreviewCharacterDetailsError() {
     RMCTheme {
         CharacterDetails(
-            uiState = DetailsUiState(
-                apiState = DetailsUiState.DetailApiState.Error(
-                    ErrorEntity.Unknown("Failed to load character data.")
-                )
-            ),
-            onRetry = {}
+            uiState =
+                DetailsUiState(
+                    apiState =
+                        DetailsUiState.DetailApiState.Error(
+                            ErrorEntity.Unknown("Failed to load character data."),
+                        ),
+                ),
+            onRetry = {},
         )
     }
 }

@@ -26,24 +26,25 @@ import com.droidos.design.R
 @Composable
 fun ErrorCard(
     subtitle: String? = null,
-    onTapRetry: () -> Unit
+    onTapRetry: () -> Unit,
 ) {
     Card(
         Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer,
-            contentColor = MaterialTheme.colorScheme.error,
-            disabledContainerColor = MaterialTheme.colorScheme.errorContainer,
-            disabledContentColor = MaterialTheme.colorScheme.errorContainer,
-        )
+        colors =
+            CardColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.error,
+                disabledContainerColor = MaterialTheme.colorScheme.errorContainer,
+                disabledContentColor = MaterialTheme.colorScheme.errorContainer,
+            ),
     ) {
         Column(
             Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Icon(
                 modifier = Modifier.size(36.dp),
@@ -54,7 +55,7 @@ fun ErrorCard(
                 text = stringResource(R.string.something_went_wrong),
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
             Text(
                 text = subtitle ?: stringResource(R.string.an_unexpected_error_occurred),
@@ -64,12 +65,13 @@ fun ErrorCard(
             )
             Button(
                 onClick = onTapRetry,
-                colors = ButtonColors(
-                    contentColor = MaterialTheme.colorScheme.onError,
-                    containerColor = MaterialTheme.colorScheme.error,
-                    disabledContentColor = MaterialTheme.colorScheme.onError,
-                    disabledContainerColor = MaterialTheme.colorScheme.error,
-                )
+                colors =
+                    ButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onError,
+                        containerColor = MaterialTheme.colorScheme.error,
+                        disabledContentColor = MaterialTheme.colorScheme.onError,
+                        disabledContainerColor = MaterialTheme.colorScheme.error,
+                    ),
             ) {
                 Text(stringResource(R.string.retry))
             }

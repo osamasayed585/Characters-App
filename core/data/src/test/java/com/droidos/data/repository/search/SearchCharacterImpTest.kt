@@ -20,7 +20,6 @@ import org.junit.Rule
 import org.junit.Test
 
 class SearchCharacterImpTest {
-
     @get:Rule(order = 0)
     val mockkRule = MockKRule(this)
 
@@ -32,29 +31,32 @@ class SearchCharacterImpTest {
 
     @Before
     fun setUp() {
-        sut = SearchCharacterImp(
-            apiService = apiService,
-            preferences = preferences,
-            dispatcherProvider = dispatcherProvider,
-            errorHandler = errorHandler
-        )
+        sut =
+            SearchCharacterImp(
+                apiService = apiService,
+                preferences = preferences,
+                dispatcherProvider = dispatcherProvider,
+                errorHandler = errorHandler,
+            )
     }
 
-    @Ignore(" Caused by -> java.lang.RuntimeException: Method isLoggable in android.util.Log not mocked. See https://developer.android.com/r/studio-ui/build/not-mocked for details.")
+    @Ignore(
+        " Caused by -> java.lang.RuntimeException: Method isLoggable in android.util.Log not mocked. See https://developer.android.com/r/studio-ui/build/not-mocked for details.",
+    )
     @Test
-    fun searchCharacter() = runTest {
-        val characterName = "Rick"
-        coEvery {
-            apiService.searchCharacters(name = characterName)
-        } returns mockCharactersResponse
+    fun searchCharacter() =
+        runTest {
+            val characterName = "Rick"
+            coEvery {
+                apiService.searchCharacters(name = characterName)
+            } returns mockCharactersResponse
 
-        val result = sut.searchCharacters(characterName)
+            val result = sut.searchCharacters(characterName)
 
-        result.test {
-            awaitItem() shouldBeEqualTo charactersResponse
+            result.test {
+                awaitItem() shouldBeEqualTo charactersResponse
+            }
         }
-    }
-
 
     @After
     fun tearDown() {

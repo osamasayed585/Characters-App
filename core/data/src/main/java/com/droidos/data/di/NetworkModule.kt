@@ -11,9 +11,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): CharactersService =
-        retrofit.create(CharactersService::class.java)
+    fun provideApiService(retrofit: Retrofit): CharactersService = retrofit.create(CharactersService::class.java)
 }

@@ -84,11 +84,3 @@ val random2Dark = Color(0xFF2E7D32)
 val random3Dark = Color(0xFFF9A825)
 val random4Dark = Color(0xFFD84315)
 val random5Dark = Color(0xFF6A1B9A)
-
-
-
-
-
-
-
-

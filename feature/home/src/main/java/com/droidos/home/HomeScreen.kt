@@ -57,7 +57,6 @@ import com.droidos.home.uiState.HomeUiState
 import com.droidos.model.beans.CharacterUIModel
 import retrofit2.HttpException
 
-
 @Composable
 fun HomesRoute(
     onNavToDetails: (Int) -> Unit,
@@ -76,7 +75,7 @@ fun HomesRoute(
         uiState = uiState,
         characters = characters,
         characterState = characterState,
-        onNavToDetails = onNavToDetails
+        onNavToDetails = onNavToDetails,
     )
 }
 
@@ -91,28 +90,28 @@ fun HomeScreen(
     val appendState = characters.loadState.append
 
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        state = characterState
+        state = characterState,
     ) {
         if (refreshState is LoadState.Loading) {
             items(10) {
                 CharacterShimmerItem()
             }
-        }
-
-        else if (refreshState is LoadState.Error) {
+        } else if (refreshState is LoadState.Error) {
             val error = refreshState.error
             item {
                 if (error is HttpException && error.code() == 404) {
                     NoResultsPlaceholder(
-                        message = stringResource(
-                            R.string.no_characters_found_for,
-                            uiState.searchQuery
-                        )
+                        message =
+                            stringResource(
+                                R.string.no_characters_found_for,
+                                uiState.searchQuery,
+                            ),
                     )
                 } else {
                     ErrorCard {
@@ -120,16 +119,15 @@ fun HomeScreen(
                     }
                 }
             }
-        }
-
-        else {
+        } else {
             if (characters.itemCount == 0) {
                 item {
                     NoResultsPlaceholder(
-                        message = stringResource(
-                            R.string.no_characters_found_for,
-                            uiState.searchQuery
-                        )
+                        message =
+                            stringResource(
+                                R.string.no_characters_found_for,
+                                uiState.searchQuery,
+                            ),
                     )
                 }
             } else {
@@ -137,7 +135,7 @@ fun HomeScreen(
                     characters[index]?.let { character ->
                         CharacterItem(
                             uiState = character,
-                            onCLick = { onNavToDetails(character.id) }
+                            onCLick = { onNavToDetails(character.id) },
                         )
                     }
                 }
@@ -146,8 +144,7 @@ fun HomeScreen(
                     items(10) {
                         CharacterShimmerItem()
                     }
-                }
-                else if (appendState is LoadState.Error) {
+                } else if (appendState is LoadState.Error) {
                     item {
                         ErrorCard {
                             characters.retry()
@@ -160,24 +157,30 @@ fun HomeScreen(
 }
 
 @Composable
-fun CharacterItem(uiState: CharacterUIModel, onCLick: () -> Unit) {
+fun CharacterItem(
+    uiState: CharacterUIModel,
+    onCLick: () -> Unit,
+) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onCLick() },
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable { onCLick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             LoadingImage(
-                modifier = Modifier
-                    .size(90.dp)
-                    .clip(CircleShape),
+                modifier =
+                    Modifier
+                        .size(90.dp)
+                        .clip(CircleShape),
                 url = uiState.image,
                 description = "${uiState.name}'s image",
             )
@@ -187,12 +190,12 @@ fun CharacterItem(uiState: CharacterUIModel, onCLick: () -> Unit) {
                 Text(
                     text = uiState.name,
                     style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
                     text = uiState.species,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 )
             }
         }
@@ -201,66 +204,76 @@ fun CharacterItem(uiState: CharacterUIModel, onCLick: () -> Unit) {
 
 @Composable
 fun CharacterShimmerItem() {
-    val shimmerColors = listOf(
-        Color.LightGray.copy(alpha = 0.6f),
-        Color.LightGray.copy(alpha = 0.2f),
-        Color.LightGray.copy(alpha = 0.6f)
-    )
+    val shimmerColors =
+        listOf(
+            Color.LightGray.copy(alpha = 0.6f),
+            Color.LightGray.copy(alpha = 0.2f),
+            Color.LightGray.copy(alpha = 0.6f),
+        )
 
     val transition = rememberInfiniteTransition(label = "")
-    val translateAnim = transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1000f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1200, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        ), label = ""
-    )
+    val translateAnim =
+        transition.animateFloat(
+            initialValue = 0f,
+            targetValue = 1000f,
+            animationSpec =
+                infiniteRepeatable(
+                    animation = tween(1200, easing = LinearEasing),
+                    repeatMode = RepeatMode.Restart,
+                ),
+            label = "",
+        )
 
-    val brush = Brush.linearGradient(
-        colors = shimmerColors,
-        start = Offset(translateAnim.value, translateAnim.value),
-        end = Offset(translateAnim.value + 200f, translateAnim.value + 200f)
-    )
+    val brush =
+        Brush.linearGradient(
+            colors = shimmerColors,
+            start = Offset(translateAnim.value, translateAnim.value),
+            end = Offset(translateAnim.value + 200f, translateAnim.value + 200f),
+        )
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier =
+            Modifier
+                .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
-                modifier = Modifier
-                    .size(90.dp)
-                    .clip(CircleShape)
-                    .background(brush)
+                modifier =
+                    Modifier
+                        .size(90.dp)
+                        .clip(CircleShape)
+                        .background(brush),
             )
 
             Spacer(modifier = Modifier.width(10.dp))
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 Box(
-                    modifier = Modifier
-                        .height(20.dp)
-                        .fillMaxWidth(0.4f)
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(brush)
+                    modifier =
+                        Modifier
+                            .height(20.dp)
+                            .fillMaxWidth(0.4f)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(brush),
                 )
 
                 Box(
-                    modifier = Modifier
-                        .height(14.dp)
-                        .fillMaxWidth(0.25f)
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(brush)
+                    modifier =
+                        Modifier
+                            .height(14.dp)
+                            .fillMaxWidth(0.25f)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(brush),
                 )
             }
         }
@@ -270,66 +283,66 @@ fun CharacterShimmerItem() {
 @Composable
 fun NoResultsPlaceholder(message: String) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(24.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             imageVector = Icons.Default.Search,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(64.dp)
+            modifier = Modifier.size(64.dp),
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = message,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
 
-
-
 @Preview(
     showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
 )
 @Composable
 fun CharacterItemPreview_Light() {
     RMCTheme {
         CharacterItem(
-            uiState = CharacterUIModel(
-                id = 1,
-                name = "Morty Smith",
-                image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                species = "Alive",
-                status = "Human"
-            ),
-            onCLick = {}
+            uiState =
+                CharacterUIModel(
+                    id = 1,
+                    name = "Morty Smith",
+                    image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+                    species = "Alive",
+                    status = "Human",
+                ),
+            onCLick = {},
         )
     }
 }
 
 @Preview(
     showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
 )
 @Composable
 fun CharacterItemPreview_Dark() {
     RMCTheme {
-
         CharacterItem(
-            uiState = CharacterUIModel(
-                id = 1,
-                name = "Morty Smith",
-                image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                species = "Alive",
-                status = "Human"
-            ),
-            onCLick = {}
+            uiState =
+                CharacterUIModel(
+                    id = 1,
+                    name = "Morty Smith",
+                    image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+                    species = "Alive",
+                    status = "Human",
+                ),
+            onCLick = {},
         )
     }
 }

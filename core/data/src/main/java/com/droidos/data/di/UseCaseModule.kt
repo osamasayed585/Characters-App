@@ -16,34 +16,29 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
+    @Provides
+    @Singleton
+    fun provideCharactersUseCase(getCharactersRepository: GetCharactersRepository): GetCharacterUseCase =
+        GetCharacterUseCase(getCharactersRepository)
 
     @Provides
     @Singleton
-    fun provideCharactersUseCase(getCharactersRepository: GetCharactersRepository): GetCharacterUseCase {
-        return GetCharacterUseCase(getCharactersRepository)
-    }
+    fun provideSearchCharacterUseCase(searchCharacterRepository: SearchCharacterRepository): GetSearchUseCase =
+        GetSearchUseCase(searchCharacterRepository)
 
     @Provides
     @Singleton
-    fun provideSearchCharacterUseCase(searchCharacterRepository: SearchCharacterRepository): GetSearchUseCase {
-        return GetSearchUseCase(searchCharacterRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideCharacterDetailsUseCase(characterDetailsRepository: CharacterDetailsRepository): GetCharacterDetailsUseCase {
-        return GetCharacterDetailsUseCase(characterDetailsRepository)
-    }
+    fun provideCharacterDetailsUseCase(characterDetailsRepository: CharacterDetailsRepository): GetCharacterDetailsUseCase =
+        GetCharacterDetailsUseCase(characterDetailsRepository)
 
     @Provides
     @Singleton
     fun provideCharactersUseCases(
         charactersRepository: GetCharactersRepository,
-        searchCharacterRepository: SearchCharacterRepository
-    ): CharactersUseCases {
-        return CharactersUseCases(
+        searchCharacterRepository: SearchCharacterRepository,
+    ): CharactersUseCases =
+        CharactersUseCases(
             getCharactersUseCase = GetCharacterUseCase(charactersRepository),
-            getSearchUseCase = GetSearchUseCase(searchCharacterRepository)
+            getSearchUseCase = GetSearchUseCase(searchCharacterRepository),
         )
-    }
 }

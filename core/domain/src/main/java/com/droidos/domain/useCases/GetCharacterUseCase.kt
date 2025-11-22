@@ -8,20 +8,17 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @ViewModelScoped
-class GetCharacterUseCase @Inject constructor(
-    private val getCharactersRepository: GetCharactersRepository,
-) {
-
-
-    /**
-     * Fetches a flow of paged characters.
-     *
-     * This function retrieves characters from the `charactersRepository`.
-     *
-     * @return A flow of PagingData containing the characters.
-     */
-    operator fun invoke(): Flow<PagingData<CharacterUIModel>> {
-        return getCharactersRepository.fetchCharacters()
+class GetCharacterUseCase
+    @Inject
+    constructor(
+        private val getCharactersRepository: GetCharactersRepository,
+    ) {
+        /**
+         * Fetches a flow of paged characters.
+         *
+         * This function retrieves characters from the `charactersRepository`.
+         *
+         * @return A flow of PagingData containing the characters.
+         */
+        operator fun invoke(): Flow<PagingData<CharacterUIModel>> = getCharactersRepository.fetchCharacters()
     }
-
-}

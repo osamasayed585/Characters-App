@@ -17,35 +17,34 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetCharactersRepositoryImp @Inject constructor(
-    private val apiService: CharactersService,
-    private val preferences: LocalDataStore,
-    private val dispatcherProvider: DispatcherProvider,
-    private val errorHandler: ErrorHandler,
-) : GetCharactersRepository {
-
-
-    override fun fetchCharacters(): Flow<PagingData<CharacterUIModel>> {
-        return Pager(
-            config = PagingConfig(
-                initialLoadSize = Constants.PAGE_SIZE,
-                pageSize = Constants.PAGE_SIZE,
-                enablePlaceholders = false,
-                prefetchDistance = 2,
-            ),
-            pagingSourceFactory = {
-                CharacterDataSource(
-                    apiService = apiService,
-                    errorHandler = errorHandler,
-                    dispatcherProvider = dispatcherProvider
-                )
-            },
-        )
-            .flow
-            .map { pagingData: PagingData<CharacterDto> ->
-                pagingData.map { networkCharacter: CharacterDto ->
-                    networkCharacter.asExternalUiModel()
+class GetCharactersRepositoryImp
+    @Inject
+    constructor(
+        private val apiService: CharactersService,
+        private val preferences: LocalDataStore,
+        private val dispatcherProvider: DispatcherProvider,
+        private val errorHandler: ErrorHandler,
+    ) : GetCharactersRepository {
+        override fun fetchCharacters(): Flow<PagingData<CharacterUIModel>> =
+            Pager(
+                config =
+                    PagingConfig(
+                        initialLoadSize = Constants.PAGE_SIZE,
+                        pageSize = Constants.PAGE_SIZE,
+                        enablePlaceholders = false,
+                        prefetchDistance = 2,
+                    ),
+                pagingSourceFactory = {
+                    CharacterDataSource(
+                        apiService = apiService,
+                        errorHandler = errorHandler,
+                        dispatcherProvider = dispatcherProvider,
+                    )
+                },
+            ).flow
+                .map { pagingData: PagingData<CharacterDto> ->
+                    pagingData.map { networkCharacter: CharacterDto ->
+                        networkCharacter.asExternalUiModel()
+                    }
                 }
-            }
     }
-}

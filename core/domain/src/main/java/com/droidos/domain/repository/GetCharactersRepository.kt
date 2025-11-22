@@ -5,7 +5,6 @@ import com.droidos.model.beans.CharacterUIModel
 import kotlinx.coroutines.flow.Flow
 
 interface GetCharactersRepository {
-
     /**
      * Requests a [Flow] of [PagingData] for [CharacterUIModel] objects.
      *

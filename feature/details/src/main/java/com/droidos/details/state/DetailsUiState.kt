@@ -12,10 +12,13 @@ data class DetailsUiState(
     val apiState: DetailApiState = DetailApiState.Loading,
     val errorEntity: ErrorEntity? = null,
 ) : ScreenState {
-
     sealed class DetailApiState {
         data object Success : DetailApiState()
+
         data object Loading : DetailApiState()
-        data class Error(val errorEntity: ErrorEntity) : DetailApiState()
+
+        data class Error(
+            val errorEntity: ErrorEntity,
+        ) : DetailApiState()
     }
 }
