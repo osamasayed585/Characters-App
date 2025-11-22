@@ -137,18 +137,15 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
       - name: Run Instrumentation Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 33
-          target: google_apis
+          api-level: 30
+          target: defaul
           arch: x86_64
           profile: Pixel 4
           disable-animations: true
-          emulator-boot-timeout: 600
+          emulator-boot-timeout: 500
           script: ./gradlew connectedCheck
 
       - name: Upload Instrumentation Report
