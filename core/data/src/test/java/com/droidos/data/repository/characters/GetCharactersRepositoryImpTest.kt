@@ -39,7 +39,9 @@ class GetCharactersRepositoryImpTest {
     }
 
     @Ignore(
-        " Caused by -> java.lang.RuntimeException: Method isLoggable in android.util.Log not mocked. See https://developer.android.com/r/studio-ui/build/not-mocked for details.",
+        " Caused by -> java.lang.RuntimeException: Method isLoggable in " +
+            "android.util.Log not mocked." +
+            " See https://developer.android.com/r/studio-ui/build/not-mocked for details.",
     )
     @Test
     fun `Given a query, When fetchCharacters is called, Then it should return a flow of PagingData`() =

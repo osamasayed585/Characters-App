@@ -57,7 +57,8 @@ class DetailsViewModelTest {
     @Test
     fun `reduce with OnGetCharacterDetails updates all character fields`() =
         runTest {
-            // Verify that when DetailsEvent.OnGetCharacterDetails is processed, all fields of the character (id, name, image, status, species)
+            // Verify that when DetailsEvent.OnGetCharacterDetails is processed,
+            // all fields of the character (id, name, image, status, species)
             // in the UI state are correctly updated from the provided CharacterUIModel.
 
             val character = createMockCharacter()
@@ -72,7 +73,8 @@ class DetailsViewModelTest {
     @Test
     fun `reduce with OnGetError updates apiState and errorEntity`() =
         runTest {
-            // Verify that when DetailsEvent.OnGetError is processed, the apiState is set to DetailApiState.Error with the correct error type,
+            // Verify that when DetailsEvent.OnGetError is processed, the apiState is set
+            // to DetailApiState.Error with the correct error type,
             // and the errorEntity in the UI state is updated with the provided error type.
             val errorMessage = "Error message"
             val errorType = ErrorEntity.Unknown(errorMessage)
@@ -87,7 +89,8 @@ class DetailsViewModelTest {
     @Test
     fun `reduce with OnGetError preserves character data`() =
         runTest {
-            // Verify that when DetailsEvent.OnGetError is processed, existing character data (id, name, image, status, species)
+            // Verify that when DetailsEvent.OnGetError is processed,
+            // existing character data (id, name, image, status, species)
             // in the UI state remains unchanged.
             produceViewModel(-1)
             sut.emitAction(DetailsAction.OnGetError(ErrorEntity.Unknown("Error Message")))
@@ -129,7 +132,8 @@ class DetailsViewModelTest {
     @Test
     fun `fetchCharacterDetails when use case returns success with null character data fields`() =
         runTest {
-            // Test the behavior when getCharacterDetailsUseCase successfully returns a CharacterUIModel, but some of its fields (e.g., name, image) are null or empty.
+            // Test the behavior when getCharacterDetailsUseCase successfully returns
+            // a CharacterUIModel, but some of its fields (e.g., name, image) are null or empty.
             // Ensure the UI state reflects these null/empty values correctly without crashing.
 
             val character = createMockCharacter(name = "", image = "")

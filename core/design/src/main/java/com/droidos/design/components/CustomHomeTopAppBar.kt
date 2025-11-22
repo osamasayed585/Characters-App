@@ -46,6 +46,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.droidos.design.R
 
+const val TWEEN_SPEC = 300
+
 @Composable
 fun CustomHomeTopAppBar(
     query: String,
@@ -60,21 +62,11 @@ fun CustomHomeTopAppBar(
             AnimatedVisibility(
                 visible = isSearchExpanded,
                 enter =
-                    expandHorizontally(animationSpec = tween(300)) +
-                        fadeIn(
-                            animationSpec =
-                                tween(
-                                    300,
-                                ),
-                        ),
+                    expandHorizontally(animationSpec = tween(TWEEN_SPEC)) +
+                        fadeIn(animationSpec = tween(TWEEN_SPEC)),
                 exit =
-                    shrinkHorizontally(animationSpec = tween(300)) +
-                        fadeOut(
-                            animationSpec =
-                                tween(
-                                    300,
-                                ),
-                        ),
+                    shrinkHorizontally(animationSpec = tween(TWEEN_SPEC)) +
+                        fadeOut(animationSpec = tween(TWEEN_SPEC)),
             ) {
                 SearchTextField(
                     modifier =
@@ -91,8 +83,8 @@ fun CustomHomeTopAppBar(
 
             AnimatedVisibility(
                 visible = !isSearchExpanded,
-                enter = fadeIn(animationSpec = tween(300)),
-                exit = fadeOut(animationSpec = tween(300)),
+                enter = fadeIn(animationSpec = tween(TWEEN_SPEC)),
+                exit = fadeOut(animationSpec = tween(TWEEN_SPEC)),
             ) {
                 CustomTopAppBar(
                     modifier =

@@ -30,7 +30,7 @@ class CharacterDataSource(
                     nextKey = if (characters.results.isEmpty()) null else page.plus(1),
                 )
             },
-            onFailure = { it: Throwable ->
+            onFailure = {
                 it.printStackTrace()
                 LoadResult.Error(Exception(it))
             },
@@ -42,7 +42,4 @@ class CharacterDataSource(
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
-
-    fun foo(): String =
-        "Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint, Hello ktlint,"
 }

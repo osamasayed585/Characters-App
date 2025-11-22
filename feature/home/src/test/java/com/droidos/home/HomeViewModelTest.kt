@@ -47,7 +47,12 @@ class HomeViewModelTest {
         runTest {
             // Test if getCharacters returns search results when the query is not blank.
             val query = "Rick Sanchez"
-            coEvery { useCases.getSearchUseCase(query) } returns flowOf(PagingData.from(testCharacters))
+            coEvery { useCases.getSearchUseCase(query) } returns
+                flowOf(
+                    PagingData.from(
+                        testCharacters,
+                    ),
+                )
             sut.emitAction(HomeActions.OnQueryChange(query))
 
             sut.characters.test {
@@ -58,13 +63,15 @@ class HomeViewModelTest {
 
     @Test
     fun `getCharacters debounce functionality`() {
-        // Test if getCharacters debounces rapid query changes and only fetches data for the latest query.
+        // Test if getCharacters debounces rapid query changes and only
+        // fetches data for the latest query.
         // TODO implement test
     }
 
     @Test
     fun `getCharacters distinctUntilChanged functionality`() {
-        // Test if getCharacters only fetches data when the query actually changes, not for identical consecutive queries.
+        // Test if getCharacters only fetches data when the query actually changes,
+        // not for identical consecutive queries.
         // TODO implement test
     }
 
@@ -118,13 +125,15 @@ class HomeViewModelTest {
 
     @Test
     fun `getCharacters flow cancellation and restart`() {
-        // Test if the flow correctly cancels and restarts when the viewModelScope is cancelled and restarted (if applicable in the test environment).
+        // Test if the flow correctly cancels and restarts
+        // when the viewModelScope is cancelled and restarted (if applicable in the test environment).
         // TODO implement test
     }
 
     @Test
     fun `getCharacters SharingStarted WhileSubscribed behavior`() {
-        // Test that the upstream flow from use cases is active only when there's at least one subscriber and stops after 5000ms of no subscribers.
+        // Test that the upstream flow from use cases is active only
+        // when there's at least one subscriber and stops after 5000ms of no subscribers.
         // TODO implement test
     }
 
@@ -136,25 +145,29 @@ class HomeViewModelTest {
 
     @Test
     fun `reduce OnQueryChange with empty query string`() {
-        // Test if reduce correctly updates the HomeUiState and searchQuery MutableStateFlow when OnQueryChange event has an empty query string.
+        // Test if reduce correctly updates the HomeUiState and searchQuery MutableStateFlow
+        // when OnQueryChange event has an empty query string.
         // TODO implement test
     }
 
     @Test
     fun `reduce OnQueryChange with special characters in query string`() {
-        // Test if reduce correctly updates the HomeUiState and searchQuery MutableStateFlow when OnQueryChange event has a query string with special characters.
+        // Test if reduce correctly updates the HomeUiState and searchQuery MutableStateFlow
+        // when OnQueryChange event has a query string with special characters.
         // TODO implement test
     }
 
     @Test
     fun `reduce OnQueryChange with long query string`() {
-        // Test if reduce correctly updates the HomeUiState and searchQuery MutableStateFlow when OnQueryChange event has a very long query string.
+        // Test if reduce correctly updates the HomeUiState and searchQuery
+        // MutableStateFlow when OnQueryChange event has a very long query string.
         // TODO implement test
     }
 
     @Test
     fun `reduce multiple OnQueryChange events`() {
-        // Test if reduce correctly handles a sequence of OnQueryChange events, ensuring the state reflects the latest query.
+        // Test if reduce correctly handles a sequence of OnQueryChange events,
+        // ensuring the state reflects the latest query.
         // TODO implement test
     }
 }

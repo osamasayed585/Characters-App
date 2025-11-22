@@ -63,9 +63,8 @@ class RMCState(
      * only one copy of the destination of the back stack, and save and restore state whenever you
      * navigate to and from it.
      *
-     * @param topLevelDestination: The destination the app needs to navigate to.
      */
-    fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {
+    fun navigateToTopLevelDestination() {
         val topLevelNavOptions =
             navOptions {
                 // Pop up to the start destination of the graph to

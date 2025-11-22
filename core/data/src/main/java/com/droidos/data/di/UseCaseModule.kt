@@ -28,8 +28,8 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideCharacterDetailsUseCase(characterDetailsRepository: CharacterDetailsRepository): GetCharacterDetailsUseCase =
-        GetCharacterDetailsUseCase(characterDetailsRepository)
+    fun provideCharacterDetailsUseCase(repository: CharacterDetailsRepository): GetCharacterDetailsUseCase =
+        GetCharacterDetailsUseCase(repository)
 
     @Provides
     @Singleton

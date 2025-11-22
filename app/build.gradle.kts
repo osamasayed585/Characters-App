@@ -1,3 +1,4 @@
+import dev.detekt.gradle.Detekt
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
@@ -6,8 +7,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.ktlint)
     alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -82,6 +84,15 @@ android {
             reporter(ReporterType.CHECKSTYLE)
             reporter(ReporterType.HTML)
         }
+    }
+}
+
+tasks.withType<Detekt>().configureEach {
+    reports {
+        checkstyle.required.set(true)
+        html.required.set(true)
+        sarif.required.set(true)
+        markdown.required.set(true)
     }
 }
 
