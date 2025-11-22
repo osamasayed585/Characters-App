@@ -122,8 +122,7 @@ jobs:
   instrumentation-test:
     name: Instrumentation Tests
     runs-on: macos-latest
-#    needs: unit-test
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Checkout code
@@ -144,12 +143,12 @@ jobs:
       - name: Run Instrumentation Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          command: test
           api-level: 33
           target: google_apis
           arch: x86_64
-          profile: Pixel 6
+          profile: Pixel 4
           disable-animations: true
+          emulator-boot-timeout: 600
           script: ./gradlew connectedCheck
 
       - name: Upload Instrumentation Report
