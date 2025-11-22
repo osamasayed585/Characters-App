@@ -7,7 +7,6 @@ import com.droidos.data.remote.CharactersService
 import com.droidos.model.beans.CharacterDto
 import retrofit2.HttpException
 import java.io.IOException
-import kotlin.coroutines.cancellation.CancellationException
 
 class SearchCharacterDataSource(
     private val apiService: CharactersService,
