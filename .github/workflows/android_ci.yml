@@ -35,7 +35,7 @@ jobs:
         run: ./gradlew lintDebug
 
       - name: Upload Lint Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lint-report
           path: app/build/reports/lint-results-debug.html
@@ -68,7 +68,7 @@ jobs:
         run: ./gradlew detekt
 
       - name: Upload Detekt Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: detekt-report
           path: app/build/reports/detekt/
@@ -77,7 +77,7 @@ jobs:
         run: ./gradlew ktlintCheck
 
       - name: Upload Ktlint Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ktlint-report
           path: app/build/reports/ktlint/
@@ -110,7 +110,7 @@ jobs:
         run: ./gradlew testDebugUnitTest
 
       - name: Upload Unit Test Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: unit-test-report
           path: app/build/reports/tests/testDebugUnitTest/
@@ -148,7 +148,7 @@ jobs:
           script: ./gradlew connectedCheck
 
       - name: Upload Instrumentation Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: instrumentation-test-report
           path: app/build/reports/androidTests/connected/
@@ -181,7 +181,7 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload Debug APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
