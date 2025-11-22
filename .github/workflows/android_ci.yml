@@ -148,6 +148,13 @@ jobs:
           emulator-boot-timeout: 500
           script: ./gradlew connectedCheck
 
+      - name: Wait before kill
+        run: sleep 5
+
+      - name: Kill Emulator
+        run: adb -s emulator-5554 emu kill || true
+        continue-on-error: true
+
       - name: Upload Instrumentation Report
         if: always()
         uses: actions/upload-artifact@v4
