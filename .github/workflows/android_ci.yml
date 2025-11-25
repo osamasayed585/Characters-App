@@ -14,7 +14,6 @@ jobs:
   lint:
     name: Android Lint Check
     runs-on: ubuntu-latest
-    needs: instrumentation-test
 
     steps:
       - name: Checkout code
@@ -121,10 +120,17 @@ jobs:
   # -------------------------------------
   instrumentation-test:
     name: Perform Instrumentation Testing
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
+    needs: unit-test
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
