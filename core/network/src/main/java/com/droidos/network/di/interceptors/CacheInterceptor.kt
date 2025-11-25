@@ -34,7 +34,7 @@ class CacheInterceptor(
             val cacheControl =
                 CacheControl
                     .Builder()
-                    .maxAge(30, TimeUnit.MINUTES)
+                    .maxAge(MAX_AGE, TimeUnit.MINUTES)
                     .build()
 
             response
@@ -42,4 +42,8 @@ class CacheInterceptor(
                 .header("Cache-Control", cacheControl.toString())
                 .build()
         }
+
+    companion object {
+        const val MAX_AGE = 30
+    }
 }
