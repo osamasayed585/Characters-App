@@ -1,0 +1,60 @@
+name: CD Pipeline
+
+on:
+  workflow_run:
+    workflows: [ "android_ci" ]
+    types:
+      - completed
+
+jobs:
+  bundle:
+    name: Build Release AAB
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build Release AAB
+        run: ./gradlew bundleRelease
+
+      - name: Sign App Bundle
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "30.0.2"
+
+      - name: Upload Signed AAB
+        uses: actions/upload-artifact@v3
+        with:
+          name: signed-release-aab
+          path: app/build/outputs/bundle/release/*.aab
+
+  deploy:
+    name: Deploy Release AAB to Play Store
+    needs: bundle
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create service_account.json
+        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+
+      - name: Deploy to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: service_account.json
+          packageName: ${{ github.event.inputs.app_id }}
+          releaseFiles: app/build/outputs/bundle/release/*.aab
+          track: production
