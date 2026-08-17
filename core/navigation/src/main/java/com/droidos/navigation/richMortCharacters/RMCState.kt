@@ -1,6 +1,7 @@
 package com.droidos.navigation.richMortCharacters
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination
@@ -25,6 +26,7 @@ fun rememberRmcState(
     coroutineScope,
 ) { RMCState(navController, networkMonitor, coroutineScope) }
 
+@Stable
 class RMCState(
     private val navController: NavHostController,
     networkMonitor: NetworkMonitor,
