@@ -10,8 +10,8 @@ import com.droidos.data.mapper.asExternalUiModel
 import com.droidos.data.remote.CharactersService
 import com.droidos.datastore.LocalDataStore
 import com.droidos.domain.repository.GetCharactersRepository
+import com.droidos.model.CharacterModel
 import com.droidos.model.beans.CharacterDto
-import com.droidos.model.beans.CharacterUIModel
 import com.droidos.network.di.errorHandler.entities.ErrorHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,7 +25,7 @@ class GetCharactersRepositoryImp
         private val dispatcherProvider: DispatcherProvider,
         private val errorHandler: ErrorHandler,
     ) : GetCharactersRepository {
-        override fun fetchCharacters(): Flow<PagingData<CharacterUIModel>> =
+        override fun fetchCharacters(): Flow<PagingData<CharacterModel>> =
             Pager(
                 config =
                     PagingConfig(

@@ -59,7 +59,7 @@ class DetailsViewModelTest {
         runTest {
             // Verify that when DetailsEvent.OnGetCharacterDetails is processed,
             // all fields of the character (id, name, image, status, species)
-            // in the UI state are correctly updated from the provided CharacterUIModel.
+            // in the UI state are correctly updated from the provided CharacterModel.
 
             val character = createMockCharacter()
             sut.emitAction(DetailsAction.OnGetCharacterDetails(character))
@@ -133,7 +133,7 @@ class DetailsViewModelTest {
     fun `fetchCharacterDetails when use case returns success with null character data fields`() =
         runTest {
             // Test the behavior when getCharacterDetailsUseCase successfully returns
-            // a CharacterUIModel, but some of its fields (e.g., name, image) are null or empty.
+            // a CharacterModel, but some of its fields (e.g., name, image) are null or empty.
             // Ensure the UI state reflects these null/empty values correctly without crashing.
 
             val character = createMockCharacter(name = "", image = "")

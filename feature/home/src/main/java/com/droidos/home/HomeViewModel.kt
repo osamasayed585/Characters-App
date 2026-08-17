@@ -9,7 +9,7 @@ import com.droidos.common.base.BaseViewModel
 import com.droidos.domain.useCases.CharactersUseCases
 import com.droidos.home.actions.HomeActions
 import com.droidos.home.uiState.HomeUiState
-import com.droidos.model.beans.CharacterUIModel
+import com.droidos.model.CharacterModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -29,7 +29,7 @@ class HomeViewModel
     constructor(
         private val charactersUseCases: CharactersUseCases,
     ) : BaseViewModel<HomeUiState, HomeActions>(HomeUiState()) {
-        val characters: StateFlow<PagingData<CharacterUIModel>> =
+        val characters: StateFlow<PagingData<CharacterModel>> =
             uiState
                 .map { it.searchQuery }
                 .debounce(500)

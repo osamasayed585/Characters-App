@@ -1,9 +1,9 @@
 package com.droidos.home
 
-import com.droidos.model.beans.CharacterUIModel
+import com.droidos.model.CharacterModel
 
 val dummySuccess_FirstSetOfData =
-    CharacterUIModel(
+    CharacterModel(
         id = 1,
         name = "Rick Sanchez",
         image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
@@ -13,28 +13,28 @@ val dummySuccess_FirstSetOfData =
 
 val dummySuccess_HomeState =
     listOf(
-        CharacterUIModel(
+        CharacterModel(
             1,
             "Rick Sanchez",
             "Alive",
             "Human",
             "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
         ),
-        CharacterUIModel(
+        CharacterModel(
             2,
             "Morty Smith",
             "Alive",
             "Human",
             "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
         ),
-        CharacterUIModel(
+        CharacterModel(
             3,
             "Summer Smith",
             "Alive",
             "Human",
             "https://rickandmortyapi.com/api/character/avatar/3.jpeg",
         ),
-        CharacterUIModel(
+        CharacterModel(
             4,
             "Beth Smith",
             "Alive",

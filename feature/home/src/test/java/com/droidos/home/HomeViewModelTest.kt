@@ -5,7 +5,7 @@ import androidx.paging.map
 import app.cash.turbine.test
 import com.droidos.domain.useCases.CharactersUseCases
 import com.droidos.home.actions.HomeActions
-import com.droidos.model.beans.testCharacters
+import com.droidos.model.testCharacters
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.coEvery

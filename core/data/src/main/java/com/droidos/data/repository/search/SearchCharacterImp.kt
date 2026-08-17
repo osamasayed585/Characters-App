@@ -10,8 +10,8 @@ import com.droidos.data.mapper.asExternalUiModel
 import com.droidos.data.remote.CharactersService
 import com.droidos.datastore.LocalDataStore
 import com.droidos.domain.repository.SearchCharacterRepository
+import com.droidos.model.CharacterModel
 import com.droidos.model.beans.CharacterDto
-import com.droidos.model.beans.CharacterUIModel
 import com.droidos.network.di.errorHandler.entities.ErrorHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,7 +25,7 @@ class SearchCharacterImp
         private val dispatcherProvider: DispatcherProvider,
         private val errorHandler: ErrorHandler,
     ) : SearchCharacterRepository {
-        override suspend fun searchCharacters(name: String): Flow<PagingData<CharacterUIModel>> =
+        override suspend fun searchCharacters(name: String): Flow<PagingData<CharacterModel>> =
             Pager(
                 config =
                     PagingConfig(

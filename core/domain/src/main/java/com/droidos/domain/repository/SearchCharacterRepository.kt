@@ -1,7 +1,7 @@
 package com.droidos.domain.repository
 
 import androidx.paging.PagingData
-import com.droidos.model.beans.CharacterUIModel
+import com.droidos.model.CharacterModel
 import kotlinx.coroutines.flow.Flow
 
 interface SearchCharacterRepository {
@@ -12,8 +12,8 @@ interface SearchCharacterRepository {
      * It will typically query a data source (remote or local) for a character matching the given name.
      *
      * @param name The name of the character to search for.
-     * @return A [CharacterUIModel] representing the found character.
+     * @return A [CharacterModel] representing the found character.
      * @throws NoSuchElementException if no character with the specified name is found.
      */
-    suspend fun searchCharacters(name: String): Flow<PagingData<CharacterUIModel>>
+    suspend fun searchCharacters(name: String): Flow<PagingData<CharacterModel>>
 }

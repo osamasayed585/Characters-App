@@ -2,7 +2,7 @@ package com.droidos.domain.useCases
 
 import androidx.paging.PagingData
 import com.droidos.domain.repository.GetCharactersRepository
-import com.droidos.model.beans.CharacterUIModel
+import com.droidos.model.CharacterModel
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -20,5 +20,5 @@ class GetCharacterUseCase
          *
          * @return A flow of PagingData containing the characters.
          */
-        operator fun invoke(): Flow<PagingData<CharacterUIModel>> = getCharactersRepository.fetchCharacters()
+        operator fun invoke(): Flow<PagingData<CharacterModel>> = getCharactersRepository.fetchCharacters()
     }

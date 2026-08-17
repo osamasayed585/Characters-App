@@ -2,7 +2,7 @@ package com.droidos.details
 
 import com.droidos.details.state.DetailsUiState
 import com.droidos.details.state.DetailsUiState.DetailApiState
-import com.droidos.model.beans.CharacterUIModel
+import com.droidos.model.CharacterModel
 import com.droidos.network.di.errorHandler.entities.ErrorEntity
 import io.mockk.every
 import io.mockk.mockk
@@ -26,7 +26,7 @@ fun createMockCharacter(
     status: String = "Alive",
     species: String = "Human",
     image: String = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-): CharacterUIModel =
+): CharacterModel =
     mockk {
         every { this@mockk.id } returns id
         every { this@mockk.name } returns name

@@ -1,10 +1,10 @@
 package com.droidos.data.mapper
 
+import com.droidos.model.CharacterModel
 import com.droidos.model.beans.CharacterDto
-import com.droidos.model.beans.CharacterUIModel
 
 fun CharacterDto.asExternalUiModel() =
-    CharacterUIModel(
+    CharacterModel(
         id = id,
         name = name,
         image = image,
