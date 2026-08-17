@@ -1,6 +1,5 @@
 package com.droidos.details
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +30,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -39,11 +37,9 @@ import com.droidos.design.components.DetailRow
 import com.droidos.design.components.ErrorCard
 import com.droidos.design.components.FullScreenLoading
 import com.droidos.design.components.HandleError
-import com.droidos.design.theme.RMCTheme
 import com.droidos.design.theme.randomColor
 import com.droidos.details.actions.DetailsAction
 import com.droidos.details.state.DetailsUiState
-import com.droidos.network.di.errorHandler.entities.ErrorEntity
 
 @Composable
 fun CharacterDetailsRoute(snackbarHostState: SnackbarHostState) {
@@ -157,78 +153,5 @@ fun CharacterDetailsContent(
                 }
             }
         }
-    }
-}
-
-@Preview(
-    name = "Character Details - Success (Light)",
-    showBackground = true,
-)
-@Preview(
-    name = "Character Details - Success (Dark)",
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-)
-@Composable
-fun PreviewCharacterDetailsSuccess() {
-    RMCTheme {
-        val sampleCharacter =
-            DetailsUiState(
-                id = 1,
-                name = "Rick Sanchez",
-                image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                species = "Human",
-                status = "Alive",
-                apiState = DetailsUiState.DetailApiState.Success,
-            )
-
-        CharacterDetails(
-            uiState = sampleCharacter,
-            onRetry = {},
-        )
-    }
-}
-
-@Preview(
-    name = "Character Details - Loading (Light)",
-    showBackground = true,
-)
-@Preview(
-    name = "Character Details - Loading (Dark)",
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-)
-@Composable
-fun PreviewCharacterDetailsLoading() {
-    RMCTheme {
-        CharacterDetails(
-            uiState = DetailsUiState(apiState = DetailsUiState.DetailApiState.Loading),
-            onRetry = {},
-        )
-    }
-}
-
-@Preview(
-    name = "Character Details - Error (Light)",
-    showBackground = false,
-)
-@Preview(
-    name = "Character Details - Error (Dark)",
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-)
-@Composable
-fun PreviewCharacterDetailsError() {
-    RMCTheme {
-        CharacterDetails(
-            uiState =
-                DetailsUiState(
-                    apiState =
-                        DetailsUiState.DetailApiState.Error(
-                            ErrorEntity.Unknown("Failed to load character data."),
-                        ),
-                ),
-            onRetry = {},
-        )
     }
 }
