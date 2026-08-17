@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.droidos.common.di.DispatcherProvider
 import com.droidos.common.utils.Constants.INITIAL_PAGE
+import com.droidos.data.paging.DistinctIdTracker
 import com.droidos.data.remote.CharactersService
 import com.droidos.model.beans.CharacterDto
 import com.droidos.model.response.CharactersResponse
@@ -15,6 +16,8 @@ class CharacterDataSource(
     private val errorHandler: ErrorHandler,
     private val dispatcherProvider: DispatcherProvider,
 ) : PagingSource<Int, CharacterDto>() {
+    private val distinctIds = DistinctIdTracker<CharacterDto> { it.id }
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterDto> {
         val page = params.key ?: INITIAL_PAGE
         return safeApiCall(
@@ -25,7 +28,9 @@ class CharacterDataSource(
         ).fold(
             onSuccess = { characters: CharactersResponse ->
                 LoadResult.Page(
-                    data = characters.results,
+                    // Keys are derived from the raw response, not the deduplicated data, so a
+                    // page that happens to be entirely duplicates does not end pagination.
+                    data = distinctIds.retainNew(characters.results),
                     prevKey = if (page == INITIAL_PAGE) null else page.minus(1),
                     nextKey = if (characters.results.isEmpty()) null else page.plus(1),
                 )

@@ -3,7 +3,9 @@ package com.droidos.data.repository.search
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.droidos.common.utils.Constants.PAGE_SIZE
 import com.droidos.data.charactersResponse
+import com.droidos.data.charactersResponseOf
 import com.droidos.data.mockCharactersResponse
 import com.droidos.data.remote.CharactersService
 import io.mockk.clearAllMocks
@@ -54,6 +56,26 @@ class SearchCharacterDataSourceTest {
         }
 
     @Test
+    fun `pagingSource emits no duplicate ids when pages overlap`() =
+        runTest {
+            // Given - a shifting result window repeats ids 4 and 5 on the second page
+            coEvery { apiService.searchCharacters(page = 1, name = name) } returns
+                charactersResponseOf(ids = listOf(1, 2, 3, 4, 5), next = NEXT_PAGE_URL)
+            coEvery { apiService.searchCharacters(page = 2, name = name) } returns
+                charactersResponseOf(ids = listOf(4, 5, 6, 7, 8), next = NEXT_PAGE_URL)
+
+            // When
+            val firstPage = sut.load(PagingSource.LoadParams.Refresh(1, PAGE_SIZE, false)) as PagingSource.LoadResult.Page
+            val secondPage = sut.load(PagingSource.LoadParams.Append(2, PAGE_SIZE, false)) as PagingSource.LoadResult.Page
+
+            // Then
+            val emittedIds = (firstPage.data + secondPage.data).map { it.id }
+            emittedIds shouldBeEqualTo emittedIds.distinct()
+            emittedIds shouldBeEqualTo listOf(1, 2, 3, 4, 5, 6, 7, 8)
+            secondPage.nextKey shouldBeEqualTo 3
+        }
+
+    @Test
     fun getRefreshKey() =
         runTest {
             // Given
@@ -86,5 +108,9 @@ class SearchCharacterDataSourceTest {
     @After
     fun tearDown() {
         clearAllMocks()
+    }
+
+    private companion object {
+        const val NEXT_PAGE_URL = "https://rickandmortyapi.com/api/character?page=3"
     }
 }

@@ -3,6 +3,7 @@ package com.droidos.data.repository.search
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.droidos.common.utils.Constants.INITIAL_PAGE
+import com.droidos.data.paging.DistinctIdTracker
 import com.droidos.data.remote.CharactersService
 import com.droidos.model.beans.CharacterDto
 import retrofit2.HttpException
@@ -12,6 +13,8 @@ class SearchCharacterDataSource(
     private val apiService: CharactersService,
     private val name: String,
 ) : PagingSource<Int, CharacterDto>() {
+    private val distinctIds = DistinctIdTracker<CharacterDto> { it.id }
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterDto> {
         val page = params.key ?: INITIAL_PAGE
 
@@ -37,7 +40,9 @@ class SearchCharacterDataSource(
             createEmptyResultPage(page)
         } else {
             LoadResult.Page(
-                data = response.results,
+                // Keys and the empty check above come from the raw response, not the
+                // deduplicated data, so a page of pure duplicates does not end pagination.
+                data = distinctIds.retainNew(response.results),
                 prevKey = if (page == INITIAL_PAGE) null else page - 1,
                 nextKey = if (response.info.next == null) null else page + 1,
             )

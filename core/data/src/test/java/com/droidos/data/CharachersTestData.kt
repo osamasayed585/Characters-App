@@ -71,6 +71,33 @@ val mockCharactersResponse =
         results = charactersResponse,
     )
 
+/** A character that differs from every other only by id, for identity-focused assertions. */
+fun characterDto(id: Int): CharacterDto = character1.copy(id = id, name = "Character $id")
+
+/**
+ * Builds a page whose [CharactersResponse.results] carry exactly [ids], in order.
+ * [next] is the raw "next page" URL the API returns; `null` marks the last page.
+ */
+fun charactersResponseOf(
+    ids: List<Int>,
+    next: String? = null,
+): CharactersResponse =
+    CharactersResponse(
+        info =
+            PageInfo(
+                count = ids.size,
+                pages = 2,
+                next = next,
+                prev = null,
+            ),
+        results = ids.map(::characterDto),
+    )
+
+fun charactersHttpResponseOf(
+    ids: List<Int>,
+    next: String? = null,
+): Response<CharactersResponse> = Response.success(charactersResponseOf(ids, next))
+
 val mockResponse: Response<CharactersResponse> = Response.success(mockCharactersResponse)
 val mockCharacterResponse: Response<CharacterDto> = Response.success(character1)
 val errorResponse: Response<CharacterDto> = Response.error(404, "Response.error()".toResponseBody())
