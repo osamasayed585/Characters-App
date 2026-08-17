@@ -11,3 +11,8 @@ java {
 kotlin {
     jvmToolchain(17)
 }
+
+dependencies {
+    compileOnly(platform(libs.androidx.compose.bom))
+    compileOnly(libs.androidx.compose.runtime)
+}

@@ -1,6 +1,9 @@
 package com.droidos.model
 
+import androidx.compose.runtime.Immutable
 
+
+@Immutable
 data class CharacterModel(
     val id: Int,
     val name: String,
