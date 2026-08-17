@@ -51,6 +51,14 @@ android {
     }
 }
 
+composeCompiler {
+    if (project.findProperty("enableComposeCompilerReports") == "true") {
+        val outputDir = layout.buildDirectory.dir("compose_compiler")
+        metricsDestination.set(outputDir)
+        reportsDestination.set(outputDir)
+    }
+}
+
 dependencies {
 
     // visibility modules
